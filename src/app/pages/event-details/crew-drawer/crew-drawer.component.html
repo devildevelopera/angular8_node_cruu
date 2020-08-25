@@ -1,0 +1,85 @@
+<table class="table crewDraw">
+  <thead class="thead-light">
+    <tr>
+      <th class="crewEdit__pos" scope="col">Position</th>
+      <th class="crewEdit__time" scope="col">Time</th>
+      <th class="crewEdit__name" scope="col">Name</th>
+      <!-- <th scope="col">Phone</th> -->
+      <th class="crewEdit__rate" scope="col" *ngIf="us.user.isAdmin">Rate</th>
+      <th class="crewEdit__fixed" scope="col" *ngIf="us.user.isAdmin">Fixed</th>
+      <th class="crewEdit__extra" scope="col" *ngIf="us.user.isAdmin">Extra</th>
+
+      <th class="crewEdit__rated" scope="col" *ngIf="us.user.isAdmin">
+        <span>Career Rating</span>
+      </th>
+      <th class="crewEdit__rating" scope="col" *ngIf="us.user.isAdmin">Event Rating</th>
+      <th class="crewEdit__status" scope="col" *ngIf="us.user.isAdmin">Status</th>
+      <th class="crewEdit__note" scope="col">Note</th>
+	  <th class="crewEdit__status" scope="col"><i class="fa fa-check-circle"></i></th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!--  *ngFor="let crewMember of event; let last = last; let even = even;" tyle="border-bottom: 1px solid grey;" [style.border-bottom]="last ? 'none' : '1px solid grey'" [ngStyle]="even && {'background-color': '#e6e6e6'}" -->
+    <tr *ngFor="let job of js.byEvent[fullEvent._id+date]">
+      <td class="crewEdit__pos">{{positionConfigurationMap[job.position]}}</td>
+      <td class="crewEdit__time _mod"><div>{{job.times.from.time||'N/A'}}</div>  <div>{{job.times.to.time||'N/A'}}</div></td>
+      <td class="crewEdit__name">
+        <span *ngIf="job.assigned && us._users[job.assigned]">{{us._users[job.assigned]?.firstName + ' ' + us._users[job.assigned]?.lastName}}</span>
+        <span *ngIf="!job.assigned">Unassigned</span>
+      </td>
+
+      <td class="crewEdit__rate" *ngIf="us.user.isAdmin">{{job?.rate&&'$'+job?.rate||''}}</td>
+      <td class="crewEdit__fixed" *ngIf="us.user.isAdmin">{{job?.fixed&&'$'+job?.fixed||''}}</td>
+      <td class="crewEdit__extra" *ngIf="us.user.isAdmin">{{job?.extra&&'$'+job?.extra||''}}</td>
+
+
+      <td class="crewEdit__rated" *ngIf="us.user.isAdmin">
+        <span *ngIf="job.assigned">{{(rs.rated[fullEvent._id+job.assigned+date]&&rs.rated[fullEvent._id+job.assigned+date].toFixed(1)||'N/A')}}</span>
+      </td>
+      <td class="crewEdit__rating" *ngIf="us.user.isAdmin">
+        <span class="row" *ngIf="job.assigned">
+          <div class="star-ratings">
+            <div class="fill-ratings" [ngStyle]="color(job)">
+              <span><a (click)="rate(1, job);">★</a><a (click)="rate(2, job);">★</a><a (click)="rate(3, job);">★</a><a
+                  (click)="rate(4, job);">★</a><a (click)="rate(5, job);">★</a></span>
+            </div>
+            <div class="empty-ratings">
+              <span><a (click)="rate(1, job);">★</a><a (click)="rate(2, job);">★</a><a (click)="rate(3, job);">★</a><a
+                  (click)="rate(4, job);">★</a><a (click)="rate(5, job);">★</a></span>
+            </div>
+          </div>
+        </span>
+      </td>
+     
+      <td class="crewEdit__status" *ngIf="us.user.isAdmin">
+        <div class="d-flex align-items-center" *ngIf="!job.accepted && !job.assigned" >
+            <div class="c-green">New</div>
+        </div>
+        <div class="d-flex align-items-center" *ngIf="!job.accepted && job.assigned">
+            <div class="c-red">Requested</div>
+        </div>
+        <div class="d-flex align-items-center" *ngIf="job.accepted">
+            <div class="c-blue">Accepted</div>
+        </div>
+      </td>
+      
+      <td class="crewEdit__note">
+        {{job.comment}}
+      </td>
+	     <td class="crewEdit__status">
+        <i class="fa fa-check-circle" style="color: green" *ngIf="job.confirm"></i>
+      </td>
+      <td>
+        <button class="btn" placement="top" ngbTooltip="{{displayCommentTooltip(job._id)}}" (click)="editComment(job)" *ngIf="job.assigned && us.user.isAdmin">
+          <i class="fa fa-comment"></i>&nbsp;
+        </button>
+        <button (click)="view(job)" class="btn"><i class="fa fa-eye"></i></button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div style="margin-left:10px; margin-top:10px;" class="row" *ngIf="!js.byEvent[fullEvent._id+date]?.length">
+  No crew selected for this date
+</div>

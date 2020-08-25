@@ -1,0 +1,33 @@
+<div>
+    <h5 class="row">
+        {{title}}
+    </h5>
+    <div class="row padding flex-nowrap">
+        <div class="column-date header">
+            <h6>Position</h6>
+        </div>
+        <div class="column header">
+            <h6>Name</h6>
+        </div>
+        <div class="column-phone header">
+            <h6>Phone</h6>
+        </div>
+        <div class="column-date header" *ngFor="let date of dates; let i = index;">
+            <h6 *ngIf="i < 5">{{date}}</h6>
+        </div>
+    </div>
+    <div *ngFor="let member of crew" style="padding:5px;" class="row padding flex-nowrap">
+        <div class="column-date crew-row">
+            {{member?.position}}
+        </div>
+        <div class="column crew-row">
+            {{member?.name}}
+        </div>
+        <div class="column-phone crew-row">
+            {{member?.phoneNumber}}
+        </div>
+        <div *ngFor="let date of dates; let i = index;" class="column-date crew-row">
+            <span *ngIf="i < 5">{{member[date] ? member[date] : 'N/A'}}</span>
+        </div>
+    </div>
+</div>

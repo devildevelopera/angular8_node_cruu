@@ -1,0 +1,11 @@
+<form (ngSubmit)="create()" class="m-5">
+	<h4>New Label</h4>
+	<div class="label-field">
+		<input class="form-control w100px my10" type="text" placeholder="Label Name" [(ngModel)]="name" name="name">
+		<input type="color" name="color" placeholder="Color" class="form-control my10 label-field__color" [(ngModel)]="color">
+	</div>
+	<div class="d-flex justify-content-between mt15">
+		<button class="btn btn-danger" type="button" (click)="modal.close();">Cancel</button>
+		<button class="btn btn-success" type="submit" [disabled]="!name || !color">Create</button>
+	</div>
+</form>

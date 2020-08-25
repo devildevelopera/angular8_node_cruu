@@ -1,0 +1,31 @@
+.btn-primary {
+    background-color: green;
+    border-color: greenyellow;
+    width: 100px;
+    border-radius: 5px 5px;
+    float:right;
+    margin-right:15px;
+    margin-top: 15px;
+    padding:3px;
+}
+.add-inventory {
+    padding:3px;
+    border-radius: 5px 5px;
+    width:40px;
+    background-color:green;
+    color:white;
+    margin-top:15px;
+}
+.close {
+    padding:3px;
+    border-radius: 5px 5px;
+    width:40px;
+    background-color:red;
+    color: white;
+    float:left;
+    margin-top:15px;
+}
+
+.row {
+    margin: 0 !important;
+}

@@ -1,0 +1,95 @@
+.star-ratings {
+  unicode-bidi: bidi-override;
+  color: #000;
+  font-size: 30px;
+  width: 132px;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+
+  .fill-ratings {
+    padding: 0;
+    position: absolute;
+    z-index: 1;
+    display: block;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+
+    span {
+      display: inline-block;
+    }
+  }
+
+  .empty-ratings {
+    padding: 0;
+    display: block;
+    z-index: 0;
+  }
+}
+
+.col-rate {
+  flex: 0 0 105px;
+  max-width: 105px;
+  padding-right: 15px;
+  padding-left: 15px;
+
+  @media screen and (max-width: 758px) {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+
+.crewDraw .thead-light th {
+
+  // min-width: 150px;
+}
+
+.crewEdit__time {
+  &._mod {
+
+    font-size: 14px;
+    line-height: 18px;
+  }
+}
+.crewEdit__note {
+	max-width: 200px;
+	width: 200px;
+}
+
+
+.crewDraw {
+  @media screen and (max-width: 1100px) {
+
+    .crewEdit__comm,
+    .crewEdit__phone,
+    .crewEdit__rated,
+    .crewEdit__rating,
+    .crewEdit__note {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+
+    .crewEdit__rate,
+    .crewEdit__fixed,
+    .crewEdit__extra {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .crewEdit__time {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 330px) {
+    .crewEdit__pos {
+      display: none;
+    }
+  }
+}

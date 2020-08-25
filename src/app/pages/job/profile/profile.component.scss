@@ -1,0 +1,46 @@
+.field-box {
+	width: 100%;
+	margin-right: 15px;
+	.form-control {
+		margin-bottom: 15px;
+	}
+}
+.field-box__timeCol {
+	flex: 50%;
+	&:first-child {
+		margin-right: 15px;
+	}
+	
+}
+.btn {cursor: pointer;}
+
+@media screen and (max-width: 500px) {
+	.job-block {
+		flex-direction: column;
+	}
+	.job-btn {
+		text-align: center;
+		margin-top: 15px;
+	}
+	.field-box__timeblock {
+		flex-direction: column;
+		.field-box__timeCol {
+			flex: 100%;
+			margin-right: 0;
+		}
+	}
+}
+.faded {
+	background-color: rgba(181, 221, 255, 0.42);
+    color: #007bff;
+	font-weight: medium;
+}
+.custom-day {
+	width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+	outline: none;
+}

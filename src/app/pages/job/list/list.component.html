@@ -1,0 +1,214 @@
+<div style="padding-left:10px">
+	<div class="row" style="margin-bottom: 10px;">
+		<h2>Open Jobs</h2>
+		<!-- <button *ngIf="us.user.isAdmin" routerLink="/job/new" class="btn-primary" style="right: 17px;position: absolute;">
+            <i class="fa fa-plus"></i>
+            <span>Add Job</span>
+        </button> -->
+	</div>	
+	<table class="table openJobs">
+		<thead class="thead-dark">
+			<tr style="padding:10px;color:#e6e6e6;" [ngStyle]="{'background-color': os.org?.primaryColor != null ? os.org.primaryColor : '#222222' }">
+				<th class="openJobs__status" scope="col" *ngIf="us.user.isAdmin">Status</th>
+				<th class="openJobs__title" scope="col">Title</th>
+				<th class="openJobs__venue" scope="col">Venue</th>
+				<th class="openJobs__pos" scope="col">Position</th>
+				<th class="openJobs__rate" scope="col" *ngIf="us.user.isAdmin">Rate</th>
+				<th class="openJobs__rate" scope="col" *ngIf="us.user.isAdmin">Fixed</th>
+				<th class="openJobs__rate" scope="col" *ngIf="us.user.isAdmin">Extra</th>
+				<th class="openJobs__date" scope="col">Date</th>
+				<th class="openJobs__time" scope="col">Call Time</th>
+				<th class="openJobs__applied" scope="col" *ngIf="us.user.isAdmin">Applied</th>
+				<th class="openJobs__actions" scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<ng-container *ngFor="let job of js.myjobs; let even = even; let i = index;">
+				<tr *ngIf="es._events[job.event]" style="padding:10px;" [ngStyle]="even && {'background-color': '#e6e6e6'}">
+					<td class="openJobs__status w100px" *ngIf="us.user.isAdmin">
+
+						<div class="d-flex align-items-center" *ngIf="!job.accepted && !job.declined && !job.assigned">
+							<div class="status _green"></div>
+							<div class="c-green">Unassigned</div>
+						</div>
+
+						<div class="d-flex align-items-center" *ngIf="!job.accepted && !job.declined && job.assigned">
+							<div class="status _red"><i class="fa fa-times"></i></div>
+							<div class="c-red">Requested</div>
+						</div>
+
+						<div class="d-flex align-items-center" *ngIf="job.accepted">
+							<div class="status _blue"><i class="fa fa-check"></i></div>
+							<div class="c-blue">Accepted</div>
+						</div>
+
+						<div class="d-flex align-items-center" *ngIf="job.declined">
+							<div class="status _blue"><i class="fa fa-check"></i></div>
+							<div class="c-blue">Denied</div>
+						</div>
+					</td>
+					<td class="openJobs__title">
+						{{es._events[job.event]?.title}}
+					</td>
+					<td class="openJobs__venue">
+						{{es._events[job.event]?.location?.venueName}}
+					</td>
+					<td class="openJobs__pos">
+						{{job.position}}
+					</td>
+					<td class="openJobs__rate" *ngIf="us.user.isAdmin">
+						{{job.rate}}
+					</td>
+					<td class="openJobs__rate" *ngIf="us.user.isAdmin">
+						{{job.fixed}}
+					</td>
+					<td class="openJobs__rate" *ngIf="us.user.isAdmin">
+						{{job.extra}}
+					</td>
+					<td class="openJobs__date" *ngIf="job.day">
+						{{job.day}}
+					</td>
+					<td class="openJobs__date" *ngIf="!job.day">
+						{{job.date?.year}}{{job.date&&'/'||''}}{{job.date?.month}}{{job.date&&'/'||''}}{{job.date?.day}}
+					</td>
+					<td class="openJobs__time">
+						{{job.times.from|time}} - {{job.times.to|time}}
+					</td>
+					<td class="openJobs__applied" *ngIf="us.user.isAdmin">
+						<div *ngIf="!(job.apply|each:js.now).length">No One Has Applied</div>
+						<div class="applied-col" *ngFor="let member of job.apply|each:js.now">
+							<span class="applied-col__text">{{us._users[member]?.firstName}}
+								{{us._users[member]?.lastName}}</span>
+							<button class="applied-col__btn _approve" *ngIf="job.assigned != member"
+								(click)="job.assigned = member; js.save(job);"><i class="fa fa-plus"></i></button>
+							<button class="applied-col__btn _remove" *ngIf="job.assigned == member"
+								(click)="job.assigned = null; js.save(job);"><i class="fa fa-times"></i></button>
+						</div>
+					</td>
+					<td class="openJobs__actions">
+						<div class="popup-more">
+							<i (click)="dropdown=i;" class="fa fa-ellipsis-v"></i>
+							<div *ngIf="dropdown==i" class="popup-body" (mouseleave)="dropdown=null">
+								<!-- User: apply for job  -->
+								<label for="applyJob" class="checkbox actions-admin _hover">
+									<button *ngIf="!job.apply[us.user._id]" class="popup-body__btn _input">Apply
+										Job</button>
+									<button *ngIf="job.apply[us.user._id]" class="popup-body__btn _input">Decline
+										Apply</button>
+									<input id="applyJob" type="checkbox" [(ngModel)]="job.apply[us.user._id]"
+										(ngModelChange)="js.apply({_id: job._id, apply: job.apply[us.user._id]});">
+								</label>
+								<!-- Admin: Active or Deactive job -->
+								<!-- <label for="activeJob" class="checkbox _hover" *ngIf="us.user.isAdmin">
+	                            <button *ngIf="job.active" class="popup-body__btn _input">Active</button>
+	                            <button *ngIf="!job.active" class="popup-body__btn _input">Deactive</button>
+	                            <input id="activeJob" type="checkbox" [(ngModel)]="job.active" (ngModelChange)="js.save(job);">
+	                        </label> -->
+								<button class="popup-body__btn _hover" (click)="view(job)">Look all table</button>
+								<button class="popup-body__btn _hover" *ngIf="us.user.isAdmin" (click)="edit(job);">Edit</button>
+								<!-- <button class="popup-body__btn _hover" (click)="js.delete(job);">Delete</button> -->
+								<button class="popup-body__btn _hover" *ngIf="us.user.isAdmin" (click)="job.active=false; js.save(job);">Delete</button>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</ng-container>
+		</tbody>
+	</table>
+
+	
+	<!-- old code -->
+	<!-- <div class="row" style="padding:10px;color:#e6e6e6;"
+		[ngStyle]="{'background-color': os.org?.primaryColor != null ? os.org.primaryColor : '#222222' }">
+		<div class="w100px">Status</div>
+		<div class="col-sm-2">Title</div>
+		<div class="col-sm-1">Venue</div>
+		<div class="col-sm-1">Position</div>
+
+		<div class="col-sm-1">Rate</div>
+
+
+		<div class="col-sm-1">Date</div>
+		<div class="col-sm-2">Call Time</div>
+		<div class="col-sm-2" *ngIf="us?.user?.isAdmin">Applied</div>
+		<div class="col-sm-1">Actions</div>
+	</div>
+	<div style="padding:10px;" *ngIf="!js.myjobs.length">No Open Jobs</div>
+	<ng-container>
+		<div class="row align-items-center" *ngFor="let job of js.myjobs; let even = even; let i = index;"
+			style="padding:10px;" [ngStyle]="even && {'background-color': '#e6e6e6'}">
+			<div class="w100px">
+
+				<div class="d-flex align-items-center" *ngIf="!job.accepted && !job.declined && !job.assigned">
+					<div class="status _green"></div>
+					<div class="c-green">Unassigned</div>
+				</div>
+
+				<div class="d-flex align-items-center" *ngIf="!job.accepted && !job.declined && job.assigned">
+					<div class="status _red"><i class="fa fa-times"></i></div>
+					<div class="c-red">Requested</div>
+				</div>
+
+				<div class="d-flex align-items-center" *ngIf="job.accepted">
+					<div class="status _blue"><i class="fa fa-check"></i></div>
+					<div class="c-blue">Accepted</div>
+				</div>
+
+				<div class="d-flex align-items-center" *ngIf="job.declined">
+					<div class="status _blue"><i class="fa fa-check"></i></div>
+					<div class="c-blue">Denied</div>
+				</div>
+
+			</div>
+
+			<div class="col-sm-2">{{es._events[job.event]?.title}}</div>
+			<div class="col-sm-1">{{es._events[job.event]?.location?.venueName}}</div>
+
+			<div class="col-sm-1">{{job.position}}</div>
+
+			<div class="col-sm-1">{{job.rate}}</div>
+			<div class="col-sm-1">{{job.fixed}}</div>
+				<div class="col-sm-1">{{job.extra}}</div>
+
+			<div class="col-sm-1" *ngIf="job.day">{{job.day}}</div>
+			<div class="col-sm-1" *ngIf="!job.day">
+				{{job.date?.year}}{{job.date&&'/'||''}}{{job.date?.month}}{{job.date&&'/'||''}}{{job.date?.day}}</div>
+
+
+
+			<div class="col-sm-2">{{job.times.from|time}} - {{job.times.to|time}}</div>
+			<div class="col-sm-2" *ngIf="us.user.isAdmin">
+				<div *ngIf="!(job.apply|each:js.now).length">No One Has Applied</div>
+				<div class="applied-col" *ngFor="let member of job.apply|each:js.now">
+					<span class="applied-col__text">{{us._users[member]?.firstName}}
+						{{us._users[member]?.lastName}}</span>
+					<button class="applied-col__btn _approve" *ngIf="job.assigned != member"
+						(click)="job.assigned = member; js.save(job);"><i class="fa fa-plus"></i></button>
+					<button class="applied-col__btn _remove" *ngIf="job.assigned == member"
+						(click)="job.assigned = null; js.save(job);"><i class="fa fa-times"></i></button>
+				</div>
+			</div>
+			<div class="col-sm-1 d-flex justify-content-center">
+				<div class="popup-more">
+					<i (click)="dropdown=i;" class="fa fa-ellipsis-v"></i>
+					<div *ngIf="dropdown==i" class="popup-body" (mouseleave)="dropdown=null">
+						
+						<label for="applyJob" class="checkbox actions-admin _hover">
+							<button *ngIf="!job.apply[us.user._id]" class="popup-body__btn _input">Apply Job</button>
+							<button *ngIf="job.apply[us.user._id]" class="popup-body__btn _input">Decline Apply</button>
+							<input id="applyJob" type="checkbox" [(ngModel)]="job.apply[us.user._id]"
+								(ngModelChange)="js.apply({_id: job._id, apply: job.apply[us.user._id]});">
+						</label>
+						
+						<button class="popup-body__btn _hover" *ngIf="us.user.isAdmin" (click)="edit(job);">Edit</button>
+						
+						<button class="popup-body__btn _hover" *ngIf="us.user.isAdmin"
+							(click)="job.active=false; js.save(job);">Delete</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</ng-container> -->
+	
+</div>

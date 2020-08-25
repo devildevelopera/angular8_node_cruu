@@ -1,0 +1,31 @@
+<div class="row" style="border-bottom: 1px solid black;">
+    <div class="col-sm-3">
+        <h6>Name</h6>
+    </div>
+    <div class="col-sm-2">
+        <h6>Quantity</h6>
+    </div>
+    <div class="col-sm-2">
+        <h6>Asset Numbers</h6>
+    </div>
+    <div class="col-sm-2">
+        <h6>Rate</h6>
+    </div>
+</div>
+<div class="row"  *ngFor="let inventoryItem of event; let last = last; let even = even;" style="border-bottom: 1px solid grey;" [style.border-bottom]="last ? 'none' : '1px solid grey'" [ngStyle]="even && {'background-color': '#e6e6e6'}">
+    <div class="col-sm-3">
+        {{inventoryItem.name}}
+    </div>
+    <div class="col-sm-2">
+        {{inventoryItem.quantity}}
+    </div>
+    <div class="col-sm-2">
+        {{inventoryItem.assets}}
+    </div>
+    <div class="col-sm-2">
+        ${{inventoryItem?.rate * inventoryItem.quantity}} ({{inventoryItem?.rate}}x1)
+    </div>
+</div>
+<div style="margin-left:10px; margin-top:10px;" class="row" *ngIf="event?.length < 1">
+    No inventory selected for this date
+</div>

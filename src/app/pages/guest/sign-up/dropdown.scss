@@ -1,0 +1,14 @@
+.sign-select .multiselect-dropdown .dropdown-btn {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.075) !important;
+  .selected-item {
+    margin-bottom: 5px;
+  }
+
+}
+.sign-select .multiselect-dropdown .dropdown-list {
+  bottom: 50px;
+  .item1 {
+    display: none;
+  }
+}

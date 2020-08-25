@@ -1,0 +1,35 @@
+<select [(ngModel)]="module">
+	<option *ngFor="let mod of modules" [value]="mod.name" [title]="mod.description">{{mod.name}}</option>
+</select>
+<button (click)="create();">Add</button>
+<table>
+	<thead>
+		<td>Url</td>
+		<td>Description</td>
+		<td>To Do / To Fix</td>
+		<td *ngFor="let role of roles">{{role.name}}</td>
+		<td>Published</td>
+		<td>Actions</td>
+	</thead>
+	<tr *ngFor="let route of (_routes[module]||[]); let i = index;">
+		<td>
+			<input type="text" [(ngModel)]="route.url" (ngModelChange)="update(route)">
+		</td>
+		<td>
+			<textarea [(ngModel)]="route.description" (ngModelChange)="update(route)"></textarea>
+		</td>
+		<td>
+			<textarea [(ngModel)]="route.tofix" (ngModelChange)="update(route)"></textarea>
+		</td>
+		<td *ngFor="let role of roles">
+			<input type="checkbox" [(ngModel)]="route.role[role.name]" (ngModelChange)="update(route)">
+		</td>
+		<td>
+			<input type="checkbox" [(ngModel)]="route.active" (ngModelChange)="update(route)">
+		</td>
+		<td>
+			<button (click)="create(route);">Clone</button>
+			<button (click)="_routes[module].splice(i, 1); delete(route);">Delete</button>
+		</td>
+	</tr>
+</table>

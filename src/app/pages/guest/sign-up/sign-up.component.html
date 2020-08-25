@@ -1,0 +1,90 @@
+<div class="sign-wrapper">
+	<div class="sign-up-container">
+		<div class="sign-logo"><img src="assets/login-logo.png" alt="sign logo"></div>
+		<h6 class="sign__link">Sign Up</h6>
+		<form [formGroup]="signUpForm">
+			<ngx-loading [show]="loading"></ngx-loading>
+			<div class="main-container">
+				<div class="content-wrapper">
+					<!-- ...more content here -->
+					<div class="overflow-container">
+						<!-- ...and more content here -->
+						<div class="overflow-content">
+							<div class="sign-fields">
+								<div class="row justify-content-between">
+									<div class="col-md-6 mb10">
+										<input class="input-field" type="text" placeholder="Email" formControlName="email" [class._error]="errorMessage && !signUpForm.controls.email.value">
+									</div>
+									<div class="col-md-6 mb10">
+										<input class="input-field" placeholder="Password" type="password" formControlName="password" [class._error]="errorMessage && !signUpForm.controls.password.value">
+									</div>
+								</div>
+								<div class="row justify-content-between">
+									<div class="col-md-6 mb10">
+										<input class="input-field" placeholder="First Name" type="text" formControlName="firstName" [class._error]="errorMessage && !signUpForm.controls.firstName.value">
+									</div>
+									<div class="col-md-6 mb10">
+										<input class="input-field" placeholder="Last Name" type="text" formControlName="lastName" [class._error]="errorMessage && !signUpForm.controls.lastName.value">
+									</div>
+								</div>
+								<div class="row justify-content-between">
+									<div class="col-md-6 mb10">
+										<input class="input-field" placeholder="Organization Name" type="text" formControlName="organizationName" [class._error]="errorMessage && !signUpForm.controls.organizationName.value">
+									</div>
+									<div class="col-md-6 mb10">
+										<input class="input-field" placeholder="Phone Number" type="text" formControlName="phoneNumber">
+									</div>
+								</div>
+								<div class="row justify-content-between">
+									<div class="col-md-6 mb10">
+										<input class="input-field" placeholder="Address 1" type="text" formControlName="address">
+									</div>
+									<div class="col-md-6 mb10">
+										<input class="input-field" placeholder="Address 2" type="text" formControlName="address2">
+									</div>
+								</div>
+								<div class="row justify-content-between">
+									<div class="col-md-6 mb10">
+										<input class="input-field" placeholder="City" type="text" formControlName="city"> 
+									</div>
+									<div class="col-md-6 mb10">
+										<input class="input-field" placeholder="State" type="text" formControlName="state">  
+									</div>
+								</div>
+								<div class="row justify-content-between">
+									<div class="col-md-6 mb10">
+										<input class="input-field" placeholder="Zip" type="number" formControlName="zip">
+									</div>
+									<div class="col-md-6 mb10">
+										<input class="input-field" placeholder="Emergency Contact Name" type="text" formControlName="emergencyContactName">
+									</div>
+								</div>
+								<div class="row justify-content-between">
+									<div class="col-md-6 mb10">
+										<input class="input-field" placeholder="Emergency Contact Phone" type="text" formControlName="emergencyContact">
+									</div>
+									<div class="col-md-6 mb10">
+										<div class="sign-select"  *ngIf="sendToken && organizationPositions.length">
+											<ng-multiselect-dropdown formControlName="selectedPositions" [data]="organizationPositions" [settings]="dropdownSettings" [class._error]="errorMessage && !signUpForm.controls.selectedPositions.value"></ng-multiselect-dropdown>
+										</div>
+									</div>
+								</div>
+								<div class="field-spacing" *ngIf="errorMessage">
+									<div class="error">{{errorMessage}}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div class="field-spacing">
+					<button type="submit" class="btn-primary"  [disabled]="disableSignUp" (click)="signUp()">Sign Up</button>
+				</div>
+				<div>
+					<a class="sign__link" routerLink="/login">Login</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,114 @@
+<div class="appContainer">
+  <nav class="navbar navbar-expand-sm navbar-dark"
+  [ngStyle]="{'background-color': os.org.primaryColor != null ? os.org.primaryColor : '#222222' }">
+    <!-- Brand -->
+    <a class="navbar-brand logo">
+      <img [src]="os.org && os.org.logo || '/api/file/public/org.png'" alt="">
+    </a>
+
+    <!-- Links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link active" routerLink="/dashboard">Cruu{{os.org && '-'+os.org.name}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/jobs">Open Jobs</a>
+      </li>
+      <!-- Dropdown -->
+      <!-- <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+          Resources
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Forms</a>
+          <a class="dropdown-item" href="#">Support</a>
+        </div>
+      </li> -->
+    </ul>
+    <ul class="navbar-nav ml-auto" (click)="toggle()" *ngIf="!expandFlyout">
+      <li>
+        <!-- <div class="notification-indicator">3</div> -->
+        <i class="fa fa-user" style="color:white;font-size:20px;"></i>
+      </li>
+      <li>
+        <a class="nav-link">{{us.user.firstName}}</a>
+      </li>
+    </ul>
+  </nav>
+  <ngb-alert style="padding:10px;padding-left:29px;" *ngIf="alert" [type]="alert.type" (close)="closeAlert(alert)">
+    <span>{{ alert.message }}</span>
+    <button *ngIf="alert.yes" (click)="alert.yes(); closeAlert(alert);" class="btn btn-primary float-right" style="margin-right: 40px; width: 50px;">Yes</button>
+    <button *ngIf="alert.no" (click)="alert.no(); closeAlert(alert);" class="btn btn-secondary float-right" style="margin-right: 10px; width: 50px;">No</button>
+  </ngb-alert>
+  <div style="padding:30px;background-color:#f8f8ff;">
+    <router-outlet></router-outlet>
+    <div *ngIf="expandFlyout" class="flyout"
+      [ngStyle]="{'background-color': os.org.primaryColor != null ? os.org.primaryColor : '#222222' }">
+      <div class="row">
+        <i (click)="toggle()" class="fa fa-close close-icon"></i>
+      </div>
+      <div class="row">
+        <i class="fa fa-user user"></i>
+      </div>
+      <div class="row" style="color:#ee352a;">
+        <h2 style="margin: auto; margin-top:10px;margin-bottom:15px;">{{us.user.firstName + ' ' + us.user.lastName}}</h2>
+      </div>
+      <div class="row" style="margin: auto; margin-top:5px;color:#f8f8ff;">
+        <div style="margin:auto;font-size:25px;" routerLink="/profile" [queryParams]="{userId: us.user._id}" (click)="toggle()">Profile</div>
+      </div>
+      <div *ngIf="us.user.isAdmin" class="row" style="margin: auto; margin-top:5px;color:#f8f8ff;">
+        <div routerLink="/settings" style="margin:auto;font-size:25px;" (click)="toggle()">Org Settings</div>
+      </div>
+      <div class="row" style="margin: auto; margin-top:5px;color:#f8f8ff;">
+        <div style="margin:auto;font-size:25px;" (click)="signOut()">Signout</div>
+      </div>
+
+
+
+      <!-- <div class="row mt-3" style="color:#ee352a;" *ngIf="us.user.isAdmin">
+        <h2 style="margin: auto; margin-top:10px;margin-bottom:15px;">Admin</h2>
+      </div>
+      <div class="row" style="margin: auto; margin-top:5px;color:#f8f8ff;" *ngIf="us.user.isAdmin">
+        <div routerLink="/events" style="margin:auto;font-size:25px;" (click)="toggle()">All Events</div>
+      </div>
+      <div class="row" style="margin: auto; margin-top:5px;color:#f8f8ff;" *ngIf="us.user.isAdmin">
+        <div routerLink="/restapi" style="margin:auto;font-size:25px;" (click)="toggle()">Public API</div>
+      </div> -->
+
+
+      <!-- 
+      <div class="row" style="margin: auto; margin-top:50px;color:#ee352a;">
+        <div style="margin:auto;font-size:25px;">Notifications
+          <div class="notification-indicator" style="color:#f8f8ff;font-size:15px;">3</div>
+        </div>
+      </div>
+      <div class="row" style="margin: auto; margin-top:20px;color:#f8f8ff;">
+        <div style="margin:auto;font-size:20px;">
+          <i class="fa fa-folder"></i>
+          New Document Uploaded
+          <i class="fa fa-chevron-right"></i>
+        </div>
+      </div>
+      <div class="row" style="margin: auto; margin-top:20px;color:#f8f8ff;">
+        <div style="margin:auto;font-size:20px;">
+          <i class="fa fa-exclamation-circle" style="color:#ee352a;"></i>
+          Update Required on Event
+          <i class="fa fa-chevron-right"></i>
+        </div>
+      </div>
+      <div class="row" style="margin: auto; margin-top:20px;color:#f8f8ff;">
+        <div style="margin:auto;font-size:20px;">
+          <i class="fa fa-info-circle"></i>
+          Event Information Changed
+          <i class="fa fa-chevron-right"></i>
+        </div>
+      </div>
+      -->
+    </div>
+  </div>
+</div>
+
+<a class="ntf" href="mailto:help@cruuing.on.spiceworks.com">
+	<div class="ntf-icon"><i class="fa fa-envelope"></i></div>
+	<div class="ntf-body"><div>Need help?</div> Email help@cruuing.on.spiceworks.com with any issues</div>
+</a>

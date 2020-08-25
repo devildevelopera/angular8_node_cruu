@@ -1,0 +1,5 @@
+<div>
+	<h3>Profile</h3>
+	<app-edit-profile *ngIf="( profileId == us.user._id || us.user.isAdmin ) && us._users[profileId]" [user]="us._users[profileId]"></app-edit-profile>
+	<app-user-profile *ngIf="profileId != us.user._id && !us.user.isAdmin" [profile]="profile" [user]="user"></app-user-profile>
+</div>

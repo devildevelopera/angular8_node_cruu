@@ -1,0 +1,88 @@
+<app-column-configuration-flyout (onCancel)="cancelConfig()" [columnHeaders]="columnHeaders" [expandFlyout]='expandFlyout'></app-column-configuration-flyout>
+<div style="padding-left:10px">
+    <div class="row" style="margin-bottom: 10px;">
+        <h2>Timeline</h2>
+        <form style="margin-left:auto" [formGroup]="filterForm">
+            <div class="form-group form-inline">
+                <input class="form-control ml-2" type="text" placeholder="Filter by keyword" formControlName="filter" />
+            </div>
+        </form>
+        <button *ngIf="us.user.isAdmin" routerLink="/event-details" [queryParams]="{isNew: 'true'}" class="btn-primary ml-1"><i class="fa fa-plus"></i> Add Event</button>
+
+
+
+        <button *ngIf="us.user.isAdmin" class="btn btn-info header-btn ml-2" (click)="sendEmail()" style="height: 38px;"><i class="fa fa-envelope"></i> Send Email</button>
+
+        <!-- <label class="header-link ml-1">
+            <div class="btn btn-info">Import</div>
+            <input type="file" (change)="import($event.target.files)" [hidden]="true">
+        </label> -->
+        
+        <!-- <label class="header-link ml-1" (click)="donwload()">
+            <div class="btn btn-info">Download PDF</div>
+        </label> -->
+
+        <button *ngIf="us.user.isAdmin" routerLink="/settings" class="btn-primary ml-1" style=" background-color: goldenrod; border-color: goldenrod;"><i class="fa fa-cog"></i> Settings</button>
+    </div>
+    <table class="table table-striped">
+        <thead style="color:#e6e6e6; line-height:40px;" [ngStyle]="{'background-color': os.org.primaryColor != null ? os.org.primaryColor : '#222222' }">
+            <th scope="col" *ngFor="let header of columnHeaders">{{header | titlecase}}</th>
+            <th scope="col">Actions <!-- <button (click)="showConfigModal()" style="float:right;color:white;" class="btn-cog"><i class="fa fa-cog"></i></button> --></th>
+        </thead>
+        <tbody *ngIf="upcomingEvents && upcomingEvents.length">
+            <tr *ngFor="let event of upcomingEvents" routerLink="/event-details" [queryParams]="{eventId: event._id}">
+                <td *ngFor="let column of columnHeaders">
+                    <!-- <ng-container *ngIf="event?.dynamicColumns">
+                        {{event.dynamicColumns[column]}}
+                    </ng-container> -->
+                    <ng-container *ngIf="event[column] && column!='venue'">{{event[column]}}</ng-container>
+                    <ng-container *ngIf="column=='venue'">{{event.location.venueName}}</ng-container>
+                    <!-- <ng-container *ngIf="event?.dynamicColumns">
+                        <ngb-highlight [result]="event?.dynamicColumns[column]" [term]="filterForm.controls.filter.value"></ngb-highlight>
+                    </ng-container> -->
+                </td>
+                <td (click)="handleActions($event)">
+                    <i *ngIf="event.createdBy == us.user._id" class="fa fa-trash" (click)="deleteEvent(event)"></i>
+                    <i *ngIf="event.createdBy != us.user._id && !event.isAvailable" (click)="removeUser(event, event.date)" style="padding-left:10px;"
+                        class="fa fa-paper-plane">
+                    </i>
+                </td>
+            </tr>
+            <div style="padding:.75rem;" *ngIf="upcomingEvents.length < 1">
+                No Upcoming Events
+            </div>
+        </tbody>
+    </table>
+
+    <div class="row" style="margin-bottom: 10px; margin-top:40px;">
+        <h4>Past Events</h4>
+    </div>
+    <table class="table table-striped">
+        <thead style="color:#e6e6e6;" [ngStyle]="{'background-color': os.org.primaryColor != null ? os.org.primaryColor : '#222222' }">
+            <th scope="col" *ngFor="let header of columnHeaders">{{header | titlecase}}</th>
+            <th scope="col">Actions</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let event of pastEvents" routerLink="/event-details" [queryParams]="{eventId: event._id}">
+                <td *ngFor="let column of columnHeaders">
+                    <!-- <ng-container *ngIf="event?.dynamicColumns">
+                        {{event.dynamicColumns[column]}}
+                    </ng-container> -->
+                    
+                    <ng-container *ngIf="event[column] && column!='venue'">{{event[column]}}</ng-container>
+                    <ng-container *ngIf="column=='venue'">{{event.location.venueName}}</ng-container>
+                    <!-- <ngb-highlight [result]="event.dynamicColumns[column]" [term]="filterForm.controls.filter.value"></ngb-highlight> -->
+                </td>
+                <td (click)="handleActions($event)">
+                    <i *ngIf="event.createdBy == us.user._id" class="fa fa-trash" (click)="deleteEvent(event)"></i>
+                    <i *ngIf="event.createdBy != us.user._id && !event.isAvailable" (click)="removeUser(event, event.date)" style="padding-left:10px;"
+                        class="fa fa-paper-plane">
+                    </i>
+                </td>
+                <div style="padding:.75rem;" *ngIf="pastEvents.length < 1">
+                    No Past Events
+                </div>
+            </tr>
+        </tbody>
+    </table>
+</div>

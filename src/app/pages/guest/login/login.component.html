@@ -1,0 +1,29 @@
+<div class="login-wrapper">
+  <div class="login-container">
+    <!-- <h1 class="logo">Cruu</h1> -->
+    <div class="login-logo"><img src="assets/login-logo.png" alt="login logo"></div>
+    
+    <h6  *ngIf="!forgotPasswordActive" class="login__link">Login</h6>
+    <h6  *ngIf="forgotPasswordActive" class="login__link">Forgot Password?</h6>
+    <form [formGroup]="loginForm">
+      <div class="field-spacing">
+        <input class="input-field" type="text" placeholder="Email" formControlName="username">
+      </div>
+      <div>
+        <input *ngIf="!forgotPasswordActive" class="input-field" placeholder="Password" type="password" formControlName="password">
+      </div>
+      <div class="field-spacing" *ngIf="errorMessage">
+          <div class="error">{{errorMessage}}</div>
+      </div>
+      <div class="field-spacing">
+        <input type="submit" class="btn-primary" (click)="handleSubmitForm()">
+      </div>
+      <div>
+        <a *ngIf="!forgotPasswordActive" class="login__link" routerLink="/sign-up">Sign Up</a>
+      </div>
+      <div>
+        <a href="" class="login__link" (click)="toggleForm()">{{toggleFormLabel}}</a>
+      </div>
+    </form>
+  </div>
+</div>

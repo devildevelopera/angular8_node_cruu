@@ -1,0 +1,8 @@
+<form (ngSubmit)="submit()" class="m-5">
+	<div class="c-text font-weight-bold">{{title}}</div>
+	<textarea class="form-control mt15 message-textarea" [(ngModel)]="message" name="message" [placeholder]="placeholder"></textarea>
+	<div class="d-flex justify-content-between mt15">
+		<button class="btn btn-danger" type="button" (click)="cancel.emit(); modal.close();">Cancel</button>
+		<button class="btn btn-success" type="submit">Submit</button>
+	</div>
+</form>

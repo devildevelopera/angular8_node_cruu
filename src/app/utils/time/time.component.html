@@ -1,0 +1,21 @@
+<label class="select">
+	<input class="select-input" type="text" [textMask]="{mask: maskTime, guide: false}"  matInput [placeholder]="placeholder" name="time" [(ngModel)]="time" (ngModelChange)="afterWhile();" [ngModelOptions]="{standalone: true}" (focus)="show=true;" (keyup.enter)="set(true); save(); show=false;"  autocomplete="off">
+	<i *ngIf="show" (click)="save(); show=false;" class="fa fa-check"></i>
+	<div *ngIf="show" class="d-flex select-body">
+		<div class="select__item">
+			<perfect-scrollbar style="max-height: 112px;" [config]="config">
+				<div class="select__item__counter" *ngFor="let _hour of hours" [class.active]="hour==_hour" (click)="hour=_hour; set(true);">{{_hour}}</div>
+			</perfect-scrollbar>
+		</div>
+		<div class="select__item">
+			<perfect-scrollbar style="max-height: 112px;" [config]="config">
+				<div class="select__item__counter" *ngFor="let _minute of minutes" [class.active]="minute==_minute" (click)="minute=_minute; set(true);">{{_minute}}</div>
+			</perfect-scrollbar>
+		</div>
+		<div class="select__item" *ngIf="meridian">
+			<perfect-scrollbar style="max-height: 112px;" [config]="config">
+				<div class="select__item__counter" *ngFor="let _kind of kinds" [class.active]="kind==_kind" (click)="kind=_kind; set(true);">{{_kind}}</div>
+			</perfect-scrollbar>
+		</div>
+	</div>
+</label>

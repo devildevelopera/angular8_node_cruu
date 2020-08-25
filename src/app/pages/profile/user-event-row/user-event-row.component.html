@@ -1,0 +1,8 @@
+<div routerLink="/event-details" [queryParams]="{eventId: event._id}" class="row user-row"
+    [ngStyle]="isEven && {'background-color': '#e6e6e6'}" style="padding:10px;">
+        <div class="col-md-3">{{event?.title}}</div>
+        <div class="col-md-2">{{event?.position}}</div>
+        <div class="col-md-2">{{event?.date}}</div>
+        <div class="col-md-2">{{event?.rating}}</div>
+        <div class="col-md-2">{{event?.comment}}</div>
+</div>

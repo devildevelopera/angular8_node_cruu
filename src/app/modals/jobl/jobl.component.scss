@@ -1,0 +1,65 @@
+
+.p20 {
+  padding: 20px;
+}
+
+
+.outline-mutted {
+  outline: none;
+}
+
+
+.grid-row-1 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 0 10px;
+}
+.grid-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 0 10px;
+}
+
+.my10{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.mt10 {
+  margin-top: 10px;
+}
+.pl15 {
+  padding-left: 15px;
+}
+
+.star-ratings {
+  unicode-bidi: bidi-override;
+  color: #000;
+  font-size: 30px;
+  width: 132px;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  .fill-ratings {
+    padding: 0;
+    position: absolute;
+    z-index: 1;
+    display: block;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    span {
+      display: inline-block;
+    }
+  }
+  .empty-ratings {
+    padding: 0;
+    display: block;
+    z-index: 0;
+  }
+}
+
+.jobv-table__text {
+  color: #495057;
+  font-weight: bold;
+}

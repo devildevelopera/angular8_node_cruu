@@ -1,0 +1,39 @@
+<div [formGroup]="crewForm" class="row flex-nowrap" [ngClass]="{'hasError': hasSchedulingError, 'isEven': isEven}">
+    <div class="td">
+        <select class="form-control" formControlName="position">
+            <option value="">Select</option>
+            <option *ngFor="let position of positionList" [value]="position.value">{{position.label}}</option>
+        </select>
+    </div>
+    <div class="td">
+        <time class="w100" [value]="crew.callTime" [update_on_init]="true" (update)="update_time($event);"></time>
+    </div>
+    <div class="td">
+        <time class="w100" [value]="crew.endTime" [update_on_init]="true" (update)="update_time_end($event);"></time>
+    </div>
+    <div class="mb10 td">
+        <select class="form-control" formControlName="selectedCrewId" [attr.disabled]="(us.org_pos[os.org._id+crewForm.controls.position.value]||[]).length ? null : ''">
+            <option value="">Select</option>
+            <option *ngFor="let crew of us.org_pos[os.org._id+crewForm.controls.position.value]||[]" [value]="crew._id">{{crew.firstName + ' ' + crew.lastName}}</option>
+        </select>
+    </div>
+    <div class="td">
+        <input class="form-control" style="width:100%;" type="text" placeholder="$Rate" formControlName="rate" (change)="crewForm.controls.fixed.setValue(null); this.crew.fixed=null; this.crew.rate=crewForm.controls.rate.value; us.refresh();" />
+    </div>
+    <div class="td">
+        <input class="form-control" style="width:100%;" type="text" placeholder="$Fixed" formControlName="fixed" (change)="crewForm.controls.rate.setValue(null); this.crew.rate=null; this.crew.fixed=crewForm.controls.fixed.value; us.refresh();" />
+    </div>
+    <div class="td">
+        <input class="form-control" style="width:100%;" type="text" placeholder="$Extra" formControlName="extra" (change)="this.crew.extra=crewForm.controls.extra.value; us.refresh();" />
+    </div>
+    <div class="col td">
+        {{crew.phoneNumber}}
+    </div>
+    <div class="td">
+        <textarea class="form-control" formControlName="comment"></textarea>
+    </div>
+    <div class="crew-actionBtn d-flex justify-content-between align-items-center td">
+        <button class="btn btn-warning btnAdd mr10" (click)="create_job()"><i class="fa fa-plus"></i></button>
+        <div class="btn btn-danger cursor-pointer"><i class="fa fa-trash" (click)="handleClick()"></i></div>
+    </div>
+</div>

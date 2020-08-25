@@ -1,0 +1,295 @@
+<app-inventory-configuration-modal></app-inventory-configuration-modal>
+<div class="d-flex justify-content-center" *ngIf="!event">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<ng-container *ngIf="event">
+    <div [formGroup]="eventDetailsForm">
+        <div class="row justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="event-title" id="TitleSection">
+                    <span *ngIf="!editMode" style="margin-right:15px;">{{event?.title}}</span>
+
+                    <input [class._alert]="alert=='title'" *ngIf="editMode" type="text" formControlName="title" class="input-field title-input" placeholder="Event Title" (ngModelChange)="eventDetailsForm.controls.title.value&&alert=='title'&&alert=''">
+                    <span *ngIf="alert=='title'" class="title_alert">Please title this event</span>
+                </h3>
+                <button *ngIf="!editMode && event?.createdBy == us.user._id" class="btn btn-success" (click)="toggleEdit()" style="margin-right:15px"><i class="fa fa-pencil"></i> Edit</button>
+                <button *ngIf="editMode" class="btn-secondary header-btn" (click)="toggleEdit()">Cancel</button>
+                <button *ngIf="editMode" style="margin-right:15px" class="btn btn-danger" (click)="onSubmit()" [class._disabled]="!eventDetailsForm.valid || notDates()">
+                    <i class="fa fa-save"></i> Save Event
+                </button>
+                <button style="margin-right:15px" *ngIf="!isClone && !editMode && event?.createdBy == us.user._id" class="btn btn-warning " (click)="cloneEvent()">
+                    <i *ngIf="!isClone" (click)="cloneEvent()" class="fa fa-clone"></i> Clone
+                </button>
+
+                <button *ngIf="us.user.isAdmin" class="btn btn-info header-btn" (click)="sendEmail()"><i class="fa fa-envelope"></i> Send Email</button>
+
+                <button *ngIf="us.user.isAdmin" class="btn btn-dark header-btn ml-2" (click)="generatePdf()"> Generate Timesheets</button>
+
+                <button *ngIf="us.user.isAdmin" class="btn btn-dark header-btn ml-2" (click)="send_48h()"> 48h</button>
+
+                <button *ngIf="!editMode && eventNeedsApprovals && event?.createdBy == us.user._id" class="btn btn-info" (click)="openDialog()">Position Approvals</button>
+            </div>
+
+            <!-- <div>
+                <label class="header-link ml-2" (click)="export();">
+                    <div class="btn btn-info">Export</div>
+                </label>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 style="margin-left:14px;margin-top:20px;">Details</h4>
+                <div class="row"  style="margin-top:15px;padding-left:15px;">
+                    <div *ngIf="editMode" class="col-sm-2" style="display:inline-block;font-size:20px;margin-left:10px;line-height:35px;">Dates: </div>
+                    <div *ngIf="!editMode && eventDates?.length" class="col-sm-4" style="line-height:36px;">
+                        <span>{{eventDates[0]}}</span>
+                        <span *ngIf="eventDates[0] != eventDates[eventDates.length-1]"> - {{eventDates[eventDates.length-1]}}</span>
+                    </div>
+                    <div *ngIf="editMode" class="col-sm-4">
+                        <app-calendar-picker [startDate]="event.startDate" [endDate]="event.endDate" (datePicked)="selectDates($event)"></app-calendar-picker>
+                    </div>
+                </div>
+                <div class="col-sm-12 event-time" [class._alert]="alert=='times'" *ngIf="editMode">
+            <h4 class="event-time__title" style="margin-left:14px;margin-top:20px;" id="TimeSection">Event Time<span *ngIf="alert=='times'" class="title_alert">Please choose a time</span></h4>
+                    <div class="row" style="margin-top:15px;">
+                        <div style="line-height:36px;width: calc(19% + 473px);">
+                            <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+                                <ngb-panel *ngFor="let date of eventDates; let i=index;" [id]="'ngb-panel-'+i">
+                                    <ng-template ngbPanelTitle>{{date}}</ng-template>
+                                    <ng-template ngbPanelContent>
+                                        <div class="ngb-picker-block">
+                                            <div class="ngb-picker-center">
+                                                <span class="mr-2">From</span>
+                                                <time [value]="event.times[date]" (update)="event.times[date]=$event; calc(date);"></time>
+                                                <!-- <ngb-timepicker [(ngModel)]="event.times[date]" (ngModelChange)="calc(date)" [ngModelOptions]="{standalone: true}" style="display:inline-block" [meridian]="true"></ngb-timepicker> -->
+                                            </div>
+
+                                           <div class="ngb-picker-center">
+                                                <span class="ml-2 mr-2">Duration</span>
+                                                <time [meridian]="false" [value]="event.times['duration'+date]" (update)="event.times['duration'+date]=$event; calc(date);"></time>
+                                                <!-- <ngb-timepicker [(ngModel)]="event.times['duration'+date]" (ngModelChange)="calc(date)" [ngModelOptions]="{standalone: true}" style="display:inline-block"></ngb-timepicker> -->
+                                           </div>
+                                            <div class="ngb-picker-center">
+                                                <span class="ml-2 mr-2">To</span>
+                                                <span *ngIf="event?.times['to'+date]">{{event?.times['to'+date]|time}}</span>
+                                                <span *ngIf="!event?.times['to'+date]">N/A</span>
+                                                <!-- <span class="ml-2 mr-2">To</span>
+                                                <ngb-timepicker [(ngModel)]="event.times['to'+date]" (ngModelChange)="calc_duration(date)" [ngModelOptions]="{standalone: true}" style="display:inline-block" [meridian]="true"></ngb-timepicker> -->
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-panel>
+                            </ngb-accordion>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-sm-12" >
+                    <div class="row venue-row" style="margin-top:15px;padding-left:15px;" id="VenueSection">
+                        <div *ngIf="editMode" class="col-sm-2" style="display:inline-block;font-size:20px;line-height:35px;margin-left:10px;">Venue: </div>
+                        <select  class="col-sm-4 event-venue _alert" [class._alert]="alert=='venue'"  *ngIf="editMode"  formControlName="selectedLocation" (change)="selectLocation()">
+                            <option value="">Select</option>
+                            <option *ngFor="let location of locationDropdownOptions" [value]="location.value">{{location.label}}</option>
+                        </select>
+                        <span *ngIf="alert=='venue'" class="title_alert">Please choose a venue</span>
+                    </div>
+                    <div class="row" style="margin-top:15px;padding-left:15px;">
+                        <div *ngIf="selectedLocation !== null">
+                            <div *ngIf="!editMode">
+                                {{selectedLocation?.venueName}}
+                            </div>
+                            {{selectedLocation?.address}} {{selectedLocation?.address2}}
+                            <br /> {{selectedLocation?.city +', ' + selectedLocation?.state + ' ' + selectedLocation?.zipCode}}
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:20px;padding-left:15px;" class="row">
+                    <label *ngIf="editMode" class="col-sm-2" style="display:inline-block;font-size:20px;margin-left:10px;line-height:35px;">
+                        <span>Files: <span *ngIf="editMode" style="font-size: 16px;">(max 15MB)</span></span>
+                        <i class="fa fa-upload icon-preview"></i>
+                        <input type="file" [(ngModel)]="files" (change)="upload($event.target.files);" [hidden]="true" accept="application/pdf" [ngModelOptions]="{standalone: true}">
+                    </label>
+                    <div *ngIf="editMode" class="col-sm 8">
+                        <ng-container *ngFor="let file of event.files; let i = index">
+                            <a [href]="file" download target="_blank">
+                                <i class="fa fa-file mr-1 icon-preview"></i>
+                                <span>{{file.split('/').pop()}}</span>
+                            </a>
+                            <i class="fa fa-trash icon-preview ml-1" (click)="delete(file); event.files.splice(i, 1);"></i>
+                        </ng-container>
+                    </div>
+                    <div *ngIf="!editMode" class="col-sm 8">
+                        <a *ngFor="let file of event.files" [href]="file" download target="_blank">
+                            <i class="fa fa-file mr-1 icon-preview"></i>
+                            <span>{{file.split('/').pop()}}</span>
+                        </a>
+                    </div>
+                </div>
+                <div style="margin-top:20px;padding-left:15px;" class="row">
+                    <div *ngIf="editMode" class="col-sm-2" style="display:inline-block;font-size:20px;margin-left:10px;line-height:35px;">Description: </div>
+                    <div *ngIf="!editMode" class="col-sm 8">
+                        <p>{{event?.description}}</p>
+                    </div>
+                    <div *ngIf="editMode" class="col-sm 8">
+                        <textarea formControlName="description" style="width: 80%; border-radius: 5px 5px; padding:10px; margin-left: 15px; height:100px;">{{event?.description}}</textarea>
+                    </div>
+                </div>
+                <ng-container *ngFor="let category of cs.categories">
+                    <div style="padding-left:15px;" class="row" *ngIf="(ls.labels|labelsByCategory:category.name:editMode:now).length">
+                        <div class="col-sm-2" style="display:inline-block;font-size:20px;margin-left:10px;line-height:35px;margin-top: 10px;">{{category.name}}: </div>
+                        <button class="btn-icon" (click)="addLabel(category)" *ngIf="editMode"><i class="fa fa-plus"></i></button>
+                        <div class="col-sm-12">
+                            <div *ngFor="let label of ls.labels|labelsByCategory:category.name:editMode:now" [class.label_active]="!editMode || label._active" [style.background-color]="label.color" class="col-sm-3 label_box mt-2" (click)="editMode && label._active=!label._active">
+                                <span>{{label.name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="col-sm-12">
+                <div class="crew-title">
+                    <h4>Crew</h4>
+                    <i (click)="print()" class="fa fa-print ml10" style="color:#4169e1;"></i> 
+                    <button *ngIf="editMode" class="btn btn-sm btn-success ml10" (click)="createCrew()">New Crew</button>
+                    <div class="cost-block ml10  _bg" *ngIf="us.user.isAdmin">
+                         <div *ngIf="editMode" class="cost-block__result">  
+                            Total Budget:
+                            <input class="form-control w100px" type="number" placeholder="Budget" [(ngModel)]="event.budget.total" [ngModelOptions]="{standalone: true}">
+                        </div>
+                        <div *ngIf="!editMode" class="cost-block__result">Total Budget: <span class="ml10 font-weight-bold">  ${{event.budget.total||0}}</span></div>
+
+                        <div class="cost-block__title p10">Actual Cost: <span class="font-weight-bold">${{event|crewCost:null:us.now}}</span></div>
+
+                        <div class="cost-block__title p10" *ngIf="(event.budget.total||0)-(event|crewCost:null:us.now)>=0">Remaining: <span class="font-weight-bold">${{(event.budget.total||0)-(event|crewCost:null:us.now)}}</span></div>
+                        <div class="cost-block__title p10" *ngIf="(event.budget.total||0)-(event|crewCost:null:us.now)<0">Need: <span class="font-weight-bold">${{((event.budget.total||0)-(event|crewCost:null:us.now))*(-1)}}</span></div>
+                    </div>
+                </div>
+                <div *ngIf="!editMode">
+                    <div class="row" style="margin-top:15px;">
+                        <div class="col-sm-12" style="line-height:36px;">
+                            <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+                                <ngb-panel *ngFor="let date of eventDates; let i=index;" [id]="'ngb-panel-'+i">
+                                    <ng-template ngbPanelTitle>
+                                        <span>{{date}}</span>
+										<span><i class="fa fa-clock"></i></span>
+                                        <span *ngIf="event?.times[date]" class="ml-3 text-muted font-weight-bold">{{event?.times[date]|time}}</span>
+                                        <span class="ml-2 mr-2 minus"></span>
+                                        <span class="text-muted font-weight-bold" *ngIf="event?.times['to'+date]">{{event?.times['to'+date]|time}}</span>
+                                    </ng-template>
+                                    <ng-template ngbPanelContent>
+                                        <crew-drawer [(fullEvent)]=event [(event)]="dateCrew[date]" [(positionConfigurationMap)]="positionConfigurationMap" [date]="date"></crew-drawer>
+                                        <div class="cost-block" *ngIf="us.user.isAdmin">
+                                            <div class="cost-block__title">Cost:</div>
+                                            <div class="cost-block__result">${{event|crewCost:date:us.now}}</div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-panel>
+                            </ngb-accordion>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="editMode && eventDates && eventDates.length">
+                    <app-crew-config [eventData]="event" [event]="dateCrew" [times]="event.times" [datesList]="eventDates" *ngIf="event?.times" [(positionConfigurationMap)]="positionConfigurationMap"></app-crew-config>
+                </div>
+            </div>
+            <!-- Inventory Information
+                    TODO: Make inventory and events tabular-->
+            <!-- <div class="col-sm-12">
+                <h4 style="margin-left:14px;margin-top:20px;">Inventory</h4>
+                <div *ngIf="!editMode">
+                    <div class="row" style="margin-top:15px;">
+                        <div class="col-sm 11" style="line-height:36px;">
+                            <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+                                <ngb-panel *ngFor="let date of eventDates; let i=index;" [id]="'ngb-panel-'+i">
+                                    <ng-template ngbPanelTitle>{{date}}</ng-template>
+                                    <ng-template ngbPanelContent>
+                                        <inventory-drawer [(event)]="dateInventory[date]"></inventory-drawer>
+                                    </ng-template>
+                                </ngb-panel>
+                            </ngb-accordion>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="editMode">
+                    <app-inventory-configuration [event]="dateInventory"></app-inventory-configuration>
+                </div>
+            </div> -->
+        </div>
+
+        <div class="row" style="margin-top:25px;">
+            <h4 *ngIf="event?.vehicles" style="margin-left:14px;margin-top:20px;">Vehicles</h4>
+        </div>
+
+        <!-- <div class="row" style="margin-top:25px;">
+            <div class="col-sm-12">
+                <h4 style="margin-left:14px;">Change Log</h4>
+            </div>
+        </div>
+        <div style="border-bottom: 1px solid black;padding:5px" class="row">
+            <div class="col-sm-2">
+                <h6>User</h6>
+            </div>
+            <div class="col-sm-1">
+                <h6>Section</h6>
+            </div>
+            <div class="col-sm-1">
+                <h6>Field</h6>
+            </div>
+            <div class="col-sm-2">
+                <h6>Old Value</h6>
+            </div>
+            <div class="col-sm-2">
+                <h6>New Value</h6>
+            </div>
+            <div class="col-sm-2">
+                <h6>Modified</h6>
+            </div>
+            <div class="col-sm-1">
+                <h6>Action</h6>
+            </div>
+            <div class="col-sm-1">
+                <h6>For Date</h6>
+            </div>
+        </div>
+        <div *ngFor="let change of event?.auditChanges" class="row" style="padding:5px">
+            <div class="col-sm-2">
+                {{change?.user.name}}
+            </div>
+            <div class="col-sm-1">
+                {{change?.section ? change?.section : 'N/A'}}
+            </div>
+            <div class="col-sm-1">
+                {{change?.field ? change?.field : 'N/A'}}
+            </div>
+            <div class="col-sm-2">
+                {{change?.oldValue ? change?.oldValue : 'N/A'}}
+            </div>
+            <div class="col-sm-2">
+                {{change?.newValue ? change?.newValue : 'N/A'}}
+            </div>
+            <div class="col-sm-2">
+                {{formatDate(change?.time)}}
+                {{formatTime(change?.time)}}
+            </div>
+            <div class="col-sm-1">
+                {{change?.action ? change?.action : 'N/A'}}
+            </div>
+            <div class="col-sm-1">
+                {{change?.forDate ? change?.forDate : 'N/A'}}
+            </div>
+        </div> -->
+
+        <div class="row" *ngIf="editMode" style="justify-content: center; margin-top:20px;">
+            <div style="justify-content: center;">
+                <button class="btn-secondary" (click)="toggleEdit()">Cancel</button>
+                <button class="btn-primary" id="btnSubmit" (click)="onSubmit()" [class._disabled]="!eventDetailsForm.valid || notDates()"><i class="fa fa-save"></i> Save Event</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</ng-container>

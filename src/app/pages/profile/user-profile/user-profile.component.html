@@ -1,0 +1,63 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-12">
+            <h5>Name: {{profile?.firstName + ' ' + profile?.lastName}}</h5>
+        </div>
+        <div class="col-md-12">
+            <h5>Email: {{profile?.email}}</h5>
+        </div>
+        <div class="col-md-12">
+            <h5>Address: <span *ngIf="profile?.address">{{profile?.address}}</span></h5>
+        </div>
+        <div class="col-md-12">
+            <h5>Address 2: <span *ngIf="profile?.address2">{{profile?.address2}}</span></h5>
+        </div>
+        <div class="col-md-12">
+            <h5>Phone Number: <span *ngIf="profile?.phoneNumber">{{profile?.phoneNumber}}</span></h5>
+        </div>
+        <div class="col-md-12">
+            <h5>Emergency Contact Name: <span *ngIf="profile?.emergencyContactName">{{profile?.emergencyContactName}}</span></h5>
+        </div>
+        <div class="col-md-12">
+            <h5>Emergency Contact: <span *ngIf="profile?.emergencyContact">{{profile?.emergencyContact}}</span></h5>
+        </div>
+        <!-- <div class="col-md-12" *ngFor="let org of profile?.organizations||[]">
+            <h5>Organization {{os._orgs[org._id]?.name||'Unknown'}}</h5>
+            <h6 *ngFor="let pos of org.positions">Position {{pos.value || pos}}</h6>
+        </div> -->
+    </div>
+</div>
+
+<ng-content></ng-content>
+
+<div class="mt-2" *ngIf="us.user.isAdmin && js.assigned[profile?._id]?.length">
+    <h5 style="margin-left:14px;">Comments:</h5>
+    <label style="margin-left:14px;" *ngFor="let job of js.assigned[profile?._id]" class="waw-checkbox">
+        <div class="grid-row-2" *ngFor="let userId of job.comments|each">
+            <span class="jobv-table__text">
+                <span>{{us._users[userId]?.firstName}} {{us._users[userId]?.lastName}}:</span>
+            </span>
+            <span> {{job.comments[userId]}}</span>
+        </div>
+    </label>
+</div>
+
+<h3>Previous Jobs</h3>
+<div class="row" style="color:white; padding:10px;" [ngStyle]="{'background-color': os.org.primaryColor != null ? os.org.primaryColor : '#222222' }">
+    <div class="col-md-3">
+        <h5>Title</h5>
+    </div>
+    <div class="col-md-2">
+        <h5>Position</h5>
+    </div>
+    <div class="col-md-2">
+        <h5>Date</h5>
+    </div>
+    <div class="col-md-2">
+        <h5>Rating</h5>
+    </div>
+    <div class="col-md-2">
+        <h5>Comment</h5>
+    </div>
+</div>
+<app-user-event-row *ngFor="let event of pastEvents; let last = last; let even = even;" [event]="event" [isEven]="even" [user]="user"></app-user-event-row>

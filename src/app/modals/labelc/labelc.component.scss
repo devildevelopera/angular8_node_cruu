@@ -1,0 +1,19 @@
+.my10 {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.label-field {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	&__color {
+		max-width: 40px;
+		width: 100%;
+		cursor: pointer;
+		margin-left: 10px;
+		padding: 5px;
+	}
+}
+.mt15 {
+	margin-top: 15px;
+}

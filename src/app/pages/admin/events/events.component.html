@@ -1,0 +1,25 @@
+<div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div style="display: inline-block;">
+            <i class="fa fa-chevron-left"></i>
+        </div>
+        <div class="col-md-1" *ngFor="let day of daysOfWeek" style="text-align:center;height:80px;width:100%;border: 1px solid grey;display: inline-block;">
+            {{day}}
+        </div>
+        <div style="display: inline-block;">
+            <i class="fa fa-chevron-right"></i>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <button class="btn-primary" style="margin-left: auto; float:right;" routerLink="/event-details" [queryParams]="{isNew: 'true'}">Add Event</button>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-6">
+            <div class="col-md-4" *ngFor="let date of displayDates">
+                <h5>{{date}}</h5>
+                <event-row [events]="displayEvents[date]"></event-row>
+            </div>
+        </div>
+    </div>
+</div>

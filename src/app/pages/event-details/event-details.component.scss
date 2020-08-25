@@ -1,0 +1,269 @@
+.input-field {
+    padding: 5px;
+    border-radius: 5px 5px;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+}
+
+.title-input {
+    width: 300px !important;
+    margin-right: 10px;
+}
+
+.crew-title {
+    margin: 20px 14px;
+    display: flex;
+    align-items: center;
+
+    .fa-print {
+        font-size: 20px;
+    }
+}
+
+.input-label {
+    display: block;
+}
+
+.btn-primary {
+    background-color: #ee352a;
+    border-color: #ee352a;
+    width: 120px;
+    height: 35px;
+    border-radius: 5px 5px;
+    float: right;
+    margin-right: 15px;
+    padding: 3px;
+
+    &._disabled {
+        background-color: grey;
+        border-color: grey;
+
+        &:focus,
+        &:active {
+            outline: none;
+            background-color: grey;
+            border-color: grey;
+            box-shadow: none !important;
+        }
+    }
+}
+
+.btn-primary:disabled {
+    background-color: #484848;
+    border: #484848;
+}
+
+.btn-secondary {
+    background: none;
+    border: none;
+    color: black;
+    height: 35px;
+    width: 100px;
+    border-radius: 5px 5px;
+    margin-right: 15px;
+    padding: 3px;
+}
+
+.btn-clone {
+    background-color: goldenrod;
+    border-color: goldenrod;
+    width: 120px;
+    height: 35px;
+    border-radius: 5px 5px;
+    float: right;
+    margin-right: 15px;
+    padding: 3px;
+    color: #fff;
+}
+
+.btn-edit {
+    background-color: green;
+    border-color: green;
+    width: 120px;
+    height: 35px;
+    border-radius: 5px 5px;
+    float: right;
+    margin-right: 15px;
+    padding: 3px;
+    color: #fff;
+}
+
+.header-btn {
+    float: none;
+}
+
+.label_box {
+    display: inline-block;
+    width: 100%;
+    margin-left: 15px;
+    padding: 10px;
+    border-radius: 5px 5px;
+    font-weight: bold;
+    opacity: 0.4;
+}
+
+.label_active {
+    opacity: 1;
+}
+
+.icon-preview {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #4169e1;
+}
+
+.event-title {
+    position: relative;
+
+    .title_alert {
+        position: absolute;
+        right: 20px;
+        bottom: -20px;
+        font-size: 14px;
+        color: #f16767;
+    }
+
+    input {
+        &._alert {
+            border-color: #f16767;
+            border-width: 2px;
+        }
+    }
+}
+
+.event-time {
+
+    &._alert {
+        border: 2px solid #f16767;
+        padding-bottom: 10px;
+    }
+
+}
+
+.event-venue {
+    position: relative;
+
+    &._alert {
+        border: 2px solid #f16767;
+        // padding-bottom: 10px;
+    }
+
+
+}
+
+.event-time__title {
+    position: relative;
+
+    .title_alert {
+        position: absolute;
+        right: 14px;
+        bottom: 8px;
+        font-size: 14px;
+        color: #f16767;
+    }
+}
+
+.venue-row {
+    position: relative;
+
+    .title_alert {
+        position: absolute;
+        left: 40px;
+        bottom: -13px;
+        font-size: 14px;
+        color: #f16767;
+    }
+}
+
+.ngb-picker-block {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.ngb-picker-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.minus {
+    content: "";
+    width: 10px;
+    display: inline-block;
+    height: 2px;
+    margin: 4px;
+    background-color: #6c757d;
+}
+
+.header-link {
+    cursor: pointer;
+
+    a {
+        color: white;
+    }
+}
+
+.ml15 {
+    margin-left: 15px;
+}
+
+.w100px {
+    width: 100px;
+}
+
+.cost-block {
+    border-radius: .25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__title {
+
+        color: #666;
+
+    }
+
+    &__result {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #666;
+        padding: 10px;
+
+        input {
+            margin-left: 10px;
+        }
+    }
+
+    &._bg {
+        background: rgba(0, 0, 0, .075);
+    }
+}
+
+.p10 {
+    padding: 10px;
+}
+
+.p20 {
+    padding: 20px;
+}
+
+.mt10 {
+    margin-top: 10px;
+}
+
+.ml10 {
+    margin-left: 10px;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+
+    .fa-plus {
+        color: #28a745;
+    }
+
+}

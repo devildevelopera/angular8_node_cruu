@@ -1,0 +1,115 @@
+.input-field {
+    padding:5px;
+    border-radius: 5px 5px;
+    width:50px;
+}
+
+.input-label {
+    margin-right:30px;
+    display: block;
+}
+
+.btn-primary {
+    background-color: #ee352a;
+    border-color: #ee352a;
+    width: 100px;
+    border-radius: 5px 5px;
+    float:right;
+    margin-right:15px;
+    margin-top: 15px;
+    padding:3px;
+}
+
+.btn-primary:disabled {
+    background-color: grey;
+    border-color: grey;
+}
+
+.btn-secondary {
+    background: none;
+    border: none;
+    color: black;
+    width:100px;
+    border-radius: 5px 5px;
+    margin-right:15px;
+    margin-top:15px;
+    padding:3px;
+}
+
+.close, .save, .apply, .remove, .undo {
+    padding:3px;
+    border-radius: 5px 5px;
+    width:40px;
+    background-color:red;
+    color: white;
+}
+
+.save {
+    background-color:green;
+    width:120px;
+    border: none;
+    margin-left: 10px;
+    display:inline-block;
+}
+
+.undo {
+    background-color:goldenrod;
+    width:120px;
+    border: none;
+    margin-left: 10px;
+    display:inline-block;
+}
+
+h5 {
+    display:inline-block;
+}
+
+#venueContainer {
+    .row {
+        margin-top: 10px;
+    }
+    .btn {
+        margin-left: 10px;
+    }
+}
+
+.nav-item{
+    cursor: pointer;
+}
+
+
+.mt15 {
+    margin-top: 15px;
+}
+.positions {
+    border-right: 1px solid #dee2e6;
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    @media screen and (max-width: 770px) {max-height: 100% !important;}
+    
+}
+.positions_selected {
+    margin-left: -15px;
+    margin-right: -15px;
+    @media screen and (max-width: 770px) {max-height: 100% !important;}
+}
+.link {
+    color: #17a2b8;
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.categ-row {
+	align-items: center;
+	.fa-arrows-alt {
+		margin-right: 10px;
+		transform: rotate(45deg);
+	}
+}
+.mb10 {
+	margin-bottom: 10px;
+}

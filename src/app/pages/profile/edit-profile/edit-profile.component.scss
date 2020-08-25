@@ -1,0 +1,99 @@
+.input-field {
+    padding:5px;
+    border-radius: 5px 5px;
+    width:100%;
+}
+
+.input-label {
+    display: block;
+}
+
+.btn-primary {
+    background-color: #ee352a;
+    border-color: #ee352a;
+    width: 100px;
+    border-radius: 5px 5px;
+    float:right;
+    margin-right:15px;
+    margin-top: 15px;
+    padding:3px;
+}
+
+.btn-primary:disabled {
+    background-color: grey;
+    border-color: grey;
+}
+
+.btn-secondary {
+    background: none;
+    border: none;
+    color: black;
+    width:100px;
+    border-radius: 5px 5px;
+    margin-right:15px;
+    margin-top:15px;
+    padding:3px;
+}
+
+
+
+// CHECKBOX
+.waw-checkbox {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 25px;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  // hidden toggle input
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  &:hover input ~ .checkmark {
+    border: 1.5px solid #30a4f7;
+  }
+  input:checked ~ .checkmark {
+    background-color: #30a4f7;
+    transition: 0.2s ease-in-out;
+  }
+  input:checked ~ .checkmark:after {
+    display: block;
+  }
+  .checkmark {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    border-radius: 6px;
+    background-color: #fff;
+    border: 1px solid #f3f3f3;
+    transition: 0.2s ease-in-out;
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 7px;
+      top: 3px;
+      width: 6px;
+      height: 11px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+  }
+}

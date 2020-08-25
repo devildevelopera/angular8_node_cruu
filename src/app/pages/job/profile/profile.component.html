@@ -1,0 +1,35 @@
+<form (ngSubmit)="submit()">
+	<div class="d-flex job-block">
+		<div class="field-box">
+			<span>Title</span>
+			<input class="form-control" type="text" [(ngModel)]="job.title" name="title" placeholder="Title">
+			<span>Rate</span>
+			<input class="form-control" type="text" [(ngModel)]="job.rate" name="rate" placeholder="Rate">
+			<span>Venue</span>
+			<select class="form-control" [(ngModel)]="job.venueName" name="venueName">
+				<option *ngFor="let location of os.org.locations" [value]="location.venueName">{{location.venueName}}</option>
+			</select>
+			<span>Position</span>
+			<select class="form-control" [(ngModel)]="job.position" name="position">
+				<option *ngFor="let location of ps._positions[os.org._id]" [value]="location.value">{{location.label}}</option>
+			</select>
+			<div class="d-flex field-box__timeblock">
+				<div class="field-box__timeCol">
+					<span>From</span>
+					<time [value]="job.times.from" (update)="job.times.from=$event;"></time>
+				</div>
+				<div class="field-box__timeCol">
+					<span>To</span>
+					<time [value]="job.times.to" (update)="job.times.to=$event;"></time>
+				</div>
+			</div>
+		</div>
+		<ngb-datepicker #dp ngModel name="Date Picker" [displayMonths]="1" [navigation]="'arrows'" [startDate]="job.date" [firstDayOfWeek]="7" [dayTemplate]="t" outsideDays="collapsed" style="border:none; border-radius:0"></ngb-datepicker>
+		<ng-template #t let-date="date" let-currentWeek="week" let-focused="focused" let-currentMonth="currentMonth">
+		    <span class="custom-day" ngClass="{'calselected': hoveredDate == date}" (click)="job.date=date;" [class.focused]="focused" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null" [class.faded]="isInside(date)" *ngIf="date">{{date.day}}</span>
+		</ng-template>
+	</div>
+	<div class="job-btn">
+		<button class="btn btn-success" type="submit" [disabled]="!job.title||!job.date||!job.times.from||!job.times.to||!job.position">{{job._id&&'Save'||'Create'}}</button>
+	</div>
+</form>

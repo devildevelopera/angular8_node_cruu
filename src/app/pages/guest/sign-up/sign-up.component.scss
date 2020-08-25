@@ -1,0 +1,123 @@
+.sign-wrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sign-up-container {
+    max-width: 550px;
+    width: 100%;
+    background-color: #d6edff;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px 10px;
+    margin: 20px;
+}
+.sign-logo {
+    width: 200px;
+    margin: 0 auto; 
+    img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
+.sign-fields {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 15px;
+    justify-content: center;
+    .row {
+        width: 100%;
+    }
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        flex-wrap: nowrap;  
+        .row {
+            margin-right: 0px;
+            margin-left: 0;
+        }
+    }
+}
+
+
+.field-spacing {
+    margin-top:15px;
+    margin-bottom: 15px;
+}
+
+.sign__link {
+    color: #5bc0de;
+}
+.input-field {
+    width: 100%;
+    padding:5px;
+    border-radius: 5px 5px;
+    border: 1px solid rgba(0,0,0,.075);
+    outline: none;
+    &::placeholder {
+        font-size: 14px;
+    }
+}
+
+.logo {
+    color: #ee352a;
+}
+
+.sign-wrapper .sign-up-container .btn-primary {
+
+    background-color: #5BC0DE;
+    border: none;
+    border-color: #5BC0DE;
+    width: 100px;
+    padding: 5px;
+    border-radius: 5px 5px;
+    outline: none;
+    &:active {
+        border-color: #3fb9dd;
+        background-color: #3fb9dd;
+    }
+    &:focus {
+        box-shadow: none;
+    }
+    
+
+}
+
+.error {
+    color: red;
+}
+
+.mb10 {
+    margin-bottom: 10px;
+}
+
+.main-container {
+    max-height: 55vh;
+    display: flex;
+    flex-direction: column;
+    @media screen and (max-width: 350px) {height: 45vh;}
+}
+
+.fixed-container {
+  height: 100px;
+  padding: 20px;
+  background-color: #0B5AB0;
+  color: white;
+}
+.content-wrapper {
+  display: flex;
+  flex: 1;
+  min-height: 0px; 
+}
+.overflow-container {
+  flex: 1;
+  overflow: auto;
+}
+.overflow-content {
+  color: black;
+  padding: 20px;
+}
+
+._error{
+    border: 1px solid red;
+}

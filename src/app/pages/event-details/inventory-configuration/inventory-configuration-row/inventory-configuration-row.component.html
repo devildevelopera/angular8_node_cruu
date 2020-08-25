@@ -1,0 +1,17 @@
+<div class="row" [ngStyle]="isEven && {'background-color': '#e6e6e6'}">
+    <div class="col-md-3">
+        {{inventory.name}}
+    </div>
+    <div class="col-md-2">
+        {{inventory.quantity}}
+    </div>
+    <div class="col-md-2">
+        {{inventory.assets}}
+    </div>
+    <div class="col-md-2">
+        ${{inventory.rate * inventory.quantity}} (${{inventory.rate}}x1)
+    </div>
+    <div class="col-md-2">
+        <i class="fa fa-trash" (click)="handleClick()"></i>
+    </div>
+</div>

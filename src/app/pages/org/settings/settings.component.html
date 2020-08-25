@@ -1,0 +1,365 @@
+<div>
+    <h3>Organization Settings</h3>
+
+    <div class="container-fluid">
+        <ngx-loading [show]="loading"></ngx-loading>
+
+		<ul class="nav nav-tabs mb-4">
+			<li class="nav-item" (click)="tab=1; hash.set('tab', 1);">
+				<a class="nav-link" [class.active]="tab==1">Members</a>
+			</li>
+			<li class="nav-item" (click)="tab=2; hash.set('tab', 2);">
+				<a class="nav-link" [class.active]="tab==2">Positions</a>
+			</li>
+			<li class="nav-item" (click)="tab=3; hash.set('tab', 3);">
+				<a class="nav-link" [class.active]="tab==3">Categories</a>
+			</li>
+			<li class="nav-item" (click)="tab=4; hash.set('tab', 4);">
+				<a class="nav-link" [class.active]="tab==4">Labels</a>
+			</li>
+			<li class="nav-item" (click)="tab=5; hash.set('tab', 5);">
+				<a class="nav-link" [class.active]="tab==5">Venues</a>
+			</li>
+			<li class="nav-item" (click)="tab=6; hash.set('tab', 6);">
+				<a class="nav-link" [class.active]="tab==6">Customize</a>
+			</li>
+		</ul>
+
+		<ng-container *ngIf="tab==1">
+	        <div id="newMemberContainer">
+	            <div class="row">
+	                <h5 style="margin-top:5px;" class="mr-2">Members</h5>
+
+	                <button *ngIf="!isAddingNewMember" type="button" class="btn btn-success" (click)="toggleNewMemberVisibility()">
+	                    <i class="fa fa-plus"></i> Add New Member
+	                </button>
+
+	                <button *ngIf="!show_new_group" type="button" class="btn btn-success ml-2" (click)="show_new_group=true; group={};">
+	                    <i class="fa fa-plus"></i> Edit Groups
+	                </button>
+	            </div>
+
+	            <div class="row" *ngIf="addingNewMemberErrorMessage">
+	                <div class="mr-2 text-danger">{{addingNewMemberErrorMessage}}</div>
+	            </div>
+
+	            <div class="row mt-2" [formGroup]="newMemberForm">
+	                <input *ngIf="isAddingNewMember" type="email" placeholder="  New Member's Email" formControlName="email" class="mr-2">
+
+	                <button *ngIf="isAddingNewMember" class="btn btn-dark mr-2" (click)="toggleNewMemberVisibility()">Cancel</button>
+
+	                <button *ngIf="isAddingNewMember" type="button" class="btn btn-success"
+	                    (click)="sendLinkToNewMember()" [disabled]="newMemberForm.invalid">
+	                    <i class="fa fa-plus"></i> Send Link
+	                </button>
+	            </div>
+
+				<div *ngIf="show_new_group">
+					<div *ngFor="let group of gs.groups" class="mt-2">
+						<span>{{group.name}}</span>
+						<button class="btn btn-dark ml-2" (click)="gs.delete(group); show_new_group=false;">Delete</button>
+						<button class="btn btn-success ml-2" (click)="add_users(group); show_new_group=false;">Add Users</button>
+					</div>
+		            <form class="row mt-2" (ngSubmit)="create_list();">
+		                <input type="text" placeholder="  New Group Name" name="name" [(ngModel)]="group.name" class="mr-2">
+
+		                <button class="btn btn-dark mr-2" (click)="show_new_group=false;">Cancel</button>
+
+		                <button type="submit" class="btn btn-success" [disabled]="!group.name">
+		                    <i class="fa fa-plus"></i> Create Group
+		                </button>
+		            </form>
+				</div>
+
+				<form class="row" style="margin-top: 20px;">
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Search" [(ngModel)]="search" name="search">
+					</div>
+				</form>
+
+	            <div style="margin-top: 20px;" class="row">
+	                <div class="col-md-6 col-sm-12 col-12">
+	                    <h3 class="col-sm-12 col-8">Current Members</h3>
+						<table class="table table-striped">
+							<thead class="thead-light">
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col"><input type="checkbox" [(ngModel)]="select_current" (change)="select(select_current, us.users_current)"></th>
+									<th scope="col">Name</th>
+									<th scope="col">Email</th>
+									<th scope="col" (click)="deleteAll(us.users_current)"><i class="fa fa-trash"></i></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let user of us.users_current|search:search:'lastName firstName'; let i = index">
+									<th scope="row">{{i+1}}</th>
+									<td><input type="checkbox" [(ngModel)]="user._selected"></td>
+									<td class="link" routerLink="/profile" [queryParams]="{userId: user._id}">{{user.lastName}}<span>, </span>{{user.firstName}}</td>
+									<td (click)="user._selected=!user._selected">{{user.email}}</td>
+									<td><i (click)="delete(user)" *ngIf="!user.isAdmin" class="fa fa-trash"></i></td>
+								</tr>
+							</tbody>
+						</table>
+	                </div>
+	                <div class="col-md-6 col-sm-12 col-12">
+	                    <h3 class="col-sm-12">Pending Members</h3>
+						<table class="table table-striped">
+							<thead class="thead-light">
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col"><input type="checkbox" [(ngModel)]="select_pending" (change)="select(select_pending, us.users_pending)"></th>
+									<th scope="col">Email</th>
+									<th scope="col"><i class="fa fa-trash" (click)="deleteAll(us.users_pending)" *ngIf="hasSelected(us.users_pending)"></i></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let user of us.users_pending|search:search:'lastName firstName'; let i = index">
+									<th scope="row">{{i+1}}</th>
+									<td><input type="checkbox" [(ngModel)]="user._selected"></td>
+									<td (click)="user._selected=!user._selected">{{user.email}}</td>
+									<td><i (click)="delete(user)" *ngIf="!user.isAdmin" class="fa fa-trash"></i></td>
+								</tr>
+							</tbody>
+						</table>
+	                </div>
+	            </div>
+
+	            <div class="row">
+	                <div class="col-md-6 col-sm-12 col-12" *ngFor="let group of gs.groups">
+	                  <div class="row justify-content-between mb10">
+	                  	  <h3 class="col-8">{{group.name}}</h3>
+							<div class="col-4">
+								<ng-multiselect-dropdown [(ngModel)]="group.labels" (onSelect)="gs.update(group);" [data]="ls.labels" [settings]="dropdownSettings" *ngIf="ls.labels?.length"></ng-multiselect-dropdown>
+							</div>
+	                  </div>
+
+						<table class="table table-striped">
+							<thead class="thead-light">
+								<tr>
+									<th scope="col">
+										<input type="checkbox" name="check" [(ngModel)]="lists_selected[group._id]" (ngModelChange)="select_group(group)">
+									</th>
+									<th scope="col">Name</th>
+									<th scope="col">Email</th>
+									<th scope="col" (click)="delete_group(group);"><i class="fa fa-trash"></i></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let userId of group.users; let i = index">
+									<td>
+										<input type="checkbox" name="check" [(ngModel)]="lists_selected[group._id+'_'+userId]">
+									</td>
+									<td class="link" routerLink="/profile" [queryParams]="{userId: us.user._id}">{{us._users[userId]?.lastName}}<span *ngIf="us._users[userId]?.lastName">, </span>{{us._users[userId]?.firstName}}</td>
+									<td (click)="lists_selected[group._id+'_'+userId]=!lists_selected[group._id+'_'+userId]">{{us._users[userId]?.email}}</td>
+									<td (click)="group.users.splice(i, 1); group._users[userId]=false; gs.update(group);"><i class="fa fa-trash"></i></td>
+								</tr>
+							</tbody>
+						</table>
+	                </div>
+	            </div>
+	        </div>
+		</ng-container>
+		<ng-container *ngIf="tab==2">
+			<div class="row">
+				<div class="col-md-6 col-sm-12 col-12 m-0">
+					<perfect-scrollbar class="positions" style="max-height: calc(100vh - 250px);" [config]="config">
+						<div class="row" style="width:400px; margin-bottom:10px;">
+							<h5 style="margin-top:5px;" class="mr-2">Positions</h5>
+							<button *ngIf="!isAdding" class="btn btn-success" (click)="toggleAddPosition()">
+								<i class="fa fa-plus"></i> Add Position</button>
+							<button *ngIf="isAdding" class="btn btn-warning" (click)="toggleAddPosition()">
+								<i class="fa fa-undo"></i> Undo</button>
+						</div>
+						<div *ngIf="isAdding" [formGroup]="newPositionForm" class="row input-group mb-3">
+							<input placeholder="Code" style="max-width:100px;" class="form-control" formControlName="newPositionValue">
+							<input placeholder="Position Name" style="max-width:200px;" class="form-control mr-2" formControlName="newPositionLabel">
+							<button class="btn btn-success" (click)="addPosition()" style="width:40px">
+									<i class="fa fa-save"></i></button>
+						</div>
+						<!-- positions -->
+						<div [formGroup]="configForm" *ngFor="let position of positions" class="row field-spacing">
+							<div class="input-group mb-3">
+								<label style="width:100px;" class="input-label" (click)="position_selected=position.value;">{{position.value}}:</label>
+								<input style="max-width:200px;justify-content: right;clear:both;" type="text" [formControlName]="position.value" class="form-control" (ngModelChange)="update_config()">
+								<i style="padding:10px;color:red;" class="fa fa-trash" (click)="removePosition(position)"></i>
+							</div>
+						</div>
+					</perfect-scrollbar>
+				</div>
+				<div class="col-md-6 col-sm-12 col-12 m-0" >
+					<perfect-scrollbar class="positions_selected" style="max-height: calc(100vh - 250px);" [config]="config">
+						<ul class="nav nav-tabs mb-4">
+							<li class="nav-item" *ngFor="let position of positions" (click)="position_selected=position.value;position_selected_label=position.label;">
+								<a class="nav-link" [class.active]="position_selected==position.value">{{position.value}}</a>
+							</li>
+						</ul>
+						<div *ngIf="position_selected">
+                            <h3 class="col-sm-12">{{position_selected}} : {{position_selected_label}}</h3>
+							<table class="table table-striped">
+								<thead class="thead-light">
+									<tr>
+										<th scope="col">Name</th>
+										<th scope="col">Email</th>
+									</tr>
+								</thead>
+								<tbody>
+									<!-- <tr *ngFor="let user of us.org_pos[os.org._id+position_selected]; let i = index">
+										<td>{{user.lastName}}<span>, </span>{{user.firstName}}</td>
+										<td>{{user.email}}</td>
+                                    </tr> -->
+                                    <tr *ngFor="let user of postionBasedUsers[position_selected]">
+                                        <td>{{user.lastName}}<span>, </span>{{user.firstName}}</td>
+										<td>{{user.email}}</td>
+                                    </tr>
+								</tbody>
+							</table>
+						</div>
+					</perfect-scrollbar>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="tab==3">
+	        <div class="row" style="width:400px; margin-bottom:10px;">
+	            <h5 style="margin-top:5px;" class="mr-2">Categories</h5>
+	            <button *ngIf="!show_new_category" class="btn btn-success" (click)="show_new_category=true;">
+	                <i class="fa fa-plus"></i> Add</button>
+	            <button *ngIf="show_new_category" class="btn btn-warning" (click)="show_new_category=false; new_category={};">
+	                <i class="fa fa-undo"></i> Undo</button>
+	        </div>
+	        <form *ngIf="show_new_category" class="row field-spacing col-xs-6 col-sm-5 col-md-4 col-lg-3 input-group mb-3" (ngSubmit)="cs.create(new_category); new_category={};">
+	            <input type="text" name="name" placeholder="Name" class="form-control" [(ngModel)]="new_category.name">
+	            <button class="btn btn-success ml-2" type="submit" [disabled]="!new_category.name"><i class="fa fa-save"></i></button>
+	        </form>
+	        <div dragula="Categories" [(dragulaModel)]="cs.categories" (dragulaModelChange)="update_categories_order()">
+		        <div *ngFor="let category of cs.categories; let i = index;" class="categ-row row field-spacing col-xs-6 col-sm-5 col-md-4 col-lg-3 input-group mb-3">
+		        	<i class="fa fa-arrows-alt"></i>
+		            <input name="name{{i}}" type="text" placeholder="Name" class="form-control" [(ngModel)]="category.name" (ngModelChange)="cs.update(category)">
+		            <button class="btn btn-danger ml-2" (click)="cs.delete(category)"><i class="fa fa-trash"></i></button>
+		        </div>
+	        </div>
+		</ng-container>
+		<ng-container *ngIf="tab==4">
+	        <div class="row" style="width:400px; margin-bottom:10px;">
+	            <h5 style="margin-top:5px;" class="mr-2">Labels</h5>
+	            <button *ngIf="!show_new_label" class="btn btn-success" (click)="show_new_label=true;">
+	                <i class="fa fa-plus"></i> Add</button>
+	            <button *ngIf="show_new_label" class="btn btn-warning" (click)="show_new_label=false; new_label={};">
+	                <i class="fa fa-undo"></i> Undo</button>
+	        </div>
+	        <form *ngIf="show_new_label" class="row field-spacing col-xs-12 col-sm-10 col-md-8 col-lg-6 input-group mb-3" (ngSubmit)="ls.create(new_label); new_label={}; show_new_label=false;">
+	            <input type="text" name="name" placeholder="Name" class="form-control" [(ngModel)]="new_label.name">
+	            <input type="color" name="color" placeholder="Color" class="form-control" [(ngModel)]="new_label.color">
+	            <select name="category" class="form-control" placeholder="Category" [(ngModel)]="new_label.category">
+	              <option [value]="category.name" *ngFor="let category of cs.categories">{{category.name}}</option>
+	            </select>
+	            <button class="btn btn-success ml-2" type="submit" [disabled]="!new_label.name||!new_label.color||!new_label.category"><i class="fa fa-save"></i></button>
+	        </form>
+	        <div *ngFor="let label of ls.labels; let i = index;" class="row field-spacing col-xs-12 col-sm-10 col-md-8 col-lg-6 input-group mb-3">
+	            <input name="name{{i}}" type="text" placeholder="Name" class="form-control" [(ngModel)]="label.name" (ngModelChange)="ls.update(label)">
+	            <input name="color{{i}}" type="color" placeholder="Color" class="form-control" [(ngModel)]="label.color" (ngModelChange)="ls.update(label)">
+	            <select name="category{{i}}" class="form-control" placeholder="Category" [(ngModel)]="label.category" (ngModelChange)="ls.update(label)">
+	              <option [value]="category.name" *ngFor="let category of cs.categories">{{category.name}}</option>
+	            </select>
+	            <button class="btn btn-danger ml-2" (click)="ls.delete(label)"><i class="fa fa-trash"></i></button>
+	        </div>
+		</ng-container>
+		<ng-container *ngIf="tab==5">
+	        <div id="venueContainer" class="mb-3">
+	            <div class="row">
+	                <h5>Venues</h5>
+                    <button *ngIf="!isEditingLocation" type="button" class="btn btn-success" (click)="createNewLocation()">
+                        <i class="fa fa-plus"></i> Add New Location
+                    </button>
+                    <button *ngIf="isEditingLocation" class="btn btn-dark" (click)="cancelEditingLocation()">Cancel</button>
+                    <button type="button" *ngIf="isEditingLocation" class="btn btn-success" (click)="create_location(); new_location={}; isEditingLocation=false;" [disabled]="!new_location.venueName||!new_location.address||!new_location.city||!new_location.state||!new_location.zipCode">
+                        <i class="fa fa-plus"></i> Create Location
+                    </button>
+	            </div>
+	            <div *ngIf="isEditingLocation">
+                	<div class="row">
+                        <div class="col-sm-1">Venue Name: </div>
+                        <input type="text" class="col-sm-4 input-field" [(ngModel)]="new_location.venueName">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">Address: </div>
+                        <input type="text" class="col-sm-4 input-field" [(ngModel)]="new_location.address">
+                        <div class="col-sm-1">Address 2: </div>
+                        <input type="text" class="col-sm-4 input-field" [(ngModel)]="new_location.address2">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">City: </div>
+                        <input type="text" class="col-sm-2 input-field" [(ngModel)]="new_location.city">
+                        <div class="col-sm-1">State: </div>
+						<select class="col-sm-1 form-control" [(ngModel)]="new_location.state">
+							<option *ngFor="let state of os.states" [value]="state.value">{{state.name}}</option>
+						</select>
+                        <div class="col-sm-1">Zip: </div>
+                        <input type="text" class="col-sm-4 input-field" [(ngModel)]="new_location.zipCode">
+                    </div>
+	            </div>
+				<ul class="nav nav-tabs mb-4 mt-2">
+					<li class="nav-item" (click)="venue_tab=location.value; hash.set('venue_tab', location.value);" *ngFor="let location of dropdownLocations">
+						<a class="nav-link" [class.active]="venue_tab==location.value">{{location.label}}</a>
+					</li>
+				</ul>
+	            <div *ngIf="venue_tab && _locations[venue_tab]">
+                    <div class="row">
+                        <div class="col-sm-1">Venue Name: </div>
+                        <input type="text" class="col-sm-4 input-field" [(ngModel)]="_locations[venue_tab].venueName" (ngModelChange)="update_location(_locations[venue_tab])">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">Address: </div>
+                        <input type="text" class="col-sm-4 input-field" [(ngModel)]="_locations[venue_tab].address" (ngModelChange)="update_location(_locations[venue_tab])">
+                        <div class="col-sm-1">Address 2: </div>
+                        <input type="text" class="col-sm-4 input-field" [(ngModel)]="_locations[venue_tab].address2" (ngModelChange)="update_location(_locations[venue_tab])">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">City: </div>
+                        <input type="text" class="col-sm-2 input-field" [(ngModel)]="_locations[venue_tab].city" (ngModelChange)="update_location(_locations[venue_tab])">
+                        <div class="col-sm-1">State: </div>
+						<select class="col-sm-1 form-control" [(ngModel)]="_locations[venue_tab].state" (ngModelChange)="update_location(_locations[venue_tab])">
+							<option *ngFor="let state of os.states" [value]="state.value">{{state.name}}</option>
+						</select>
+                        <div class="col-sm-1">Zip: </div>
+                        <input type="text" class="col-sm-4 input-field" [(ngModel)]="_locations[venue_tab].zipCode" (ngModelChange)="update_location(_locations[venue_tab])">
+                    </div>
+	            </div>
+	        </div>
+		</ng-container>
+		<ng-container *ngIf="tab==6">
+			<div class="mb-3">
+				<div class="row">
+					<h5>Custom Logo</h5>
+				</div>
+				<label class="row">
+					<img [src]="croppedImage || os.org.logo || '/api/file/public/org.png'" alt="" height="50">
+					<input type="file" (change)="imageChangedEvent = $event;" [hidden]="true" accept="image/*">
+				</label>
+
+				<div class="row" *ngIf="imageChangedEvent">
+					<image-cropper [imageChangedEvent]="imageChangedEvent"
+						[maintainAspectRatio]="true"
+						[resizeToWidth]="50"
+						[aspectRatio]="1"
+						format="png"
+						(imageCropped)="imageCropped($event)"
+						(imageLoaded)="(imageLoaded())"
+					></image-cropper>
+					<div class="col-12 mt-2">
+						<button class="btn btn-success float-right ml-2" (click)="upload();">Save</button>
+						<button class="btn btn-danger float-right" (click)="imageChangedEvent = null;">Cancel</button>
+					</div>
+				</div>
+			</div>
+			<div class="mb-3">
+				<div class="row">
+					<h5>Custom Email</h5>
+				</div>
+				<label class="row">
+					<input type="text" placeholder="Type the email" name="email" [(ngModel)]="os.org.email" (ngModelChange)="os.save(os.org)" class="mr-2">
+				</label>
+			</div>
+		</ng-container>
+        <div class="border-top mt15"></div>
+    </div>
+</div>

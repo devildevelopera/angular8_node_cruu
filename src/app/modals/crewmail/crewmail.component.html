@@ -1,0 +1,40 @@
+<div class="email">
+	<div class="d-flex justify-content-between align-items-center mb20">
+		<div class="email-title font-weight-bold">Send Email</div>
+		<button type="button" class="email-close close outline-mutted" (click)="modal.close()">
+			<span>&times;</span>
+		</button>
+	</div>
+	<div class="email-msg">
+		<input class="email-msg__input form-control" type="text" [(ngModel)]="email.subject" placeholder="Subject">
+		<textarea class="email-msg__textarea form-control" [(ngModel)]="email.message" placeholder="Message"></textarea>
+	</div>
+	<div class="email-date">
+		<span>Date<span *ngIf="dates.length>1">s</span></span>
+		<div class="date-grid">
+			<div class="date-block my10" *ngFor="let date of dates">
+				<label class="waw-checkbox">
+					<span>{{date}}</span>
+					<input type="checkbox" [(ngModel)]="_dates[date]" name="date" (ngModelChange)="select(date)">
+					<span class="checkmark"></span>
+				</label>
+				<ng-container *ngFor="let job of js.byEvent[_id+date]">
+					<label class="waw-checkbox ml30"  *ngIf="job.assigned">
+						<span>{{job.position}}: <span>{{us._users[job.assigned]?.firstName}} {{us._users[job.assigned]?.lastName}} ({{us._users[job.assigned]?.email}})</span></span>
+						<input type="checkbox" [(ngModel)]="_selected[job.assigned]" name="date">
+						<span class="checkmark"></span>
+					</label>
+				</ng-container>
+
+				<!-- <ng-container *ngFor="let job of js.byEvent[_id+date]">
+					<label *ngIf="job.assigned">
+						<input type="checkbox" [(ngModel)]="_selected[job.assigned]" name="date">
+						<span>{{job.position}}: </span>
+						<span>{{us._users[job.assigned]?.email}}</span>
+					</label>
+				</ng-container> -->
+			</div>
+		</div>
+	</div>
+	<button class="email-btn btn btn-success" (click)="submit()">Send</button>
+</div>

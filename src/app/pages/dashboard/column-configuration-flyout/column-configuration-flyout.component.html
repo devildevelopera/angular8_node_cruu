@@ -1,0 +1,24 @@
+<div [formGroup]="columnForm" style="color: white;padding:30px;" *ngIf="expandFlyout" class="flyout" [ngStyle]="{'background-color': os.org.primaryColor != null ? os.org.primaryColor : '#222222' }">
+    <div style="float:right;" class="row">
+        <i style="font-size:25px;margin-top:20px;" (click)="toggle()" class="fa fa-close close-icon"></i>
+    </div>
+    <div style="justify-content: center;margin-top:19px;" class="row">
+        <h4>Column Configuration</h4>
+        <p>Select which columns to display and in what order to display them.</p>
+    </div>
+    <div style="margin-bottom:10px;" *ngFor="let column of columnHeaders; let i = index" class="row">
+        <label>#{{i}}</label>
+        <select (change)="addColumnValue(i, columnOption)" style="width:250px;margin-left:10px;" [value]="column" [formControlName]="i">
+            <option *ngFor="let columnOption of columnOptions">{{columnOption}}</option>
+        </select>
+        <button class="trash" (click)="removeColumn(i)"><i class="fa fa-trash"></i></button>
+    </div>
+    <div class="row">
+            <button class="btn-add" *ngIf="columnHeaders.length <= 6" (click)="addColumn()"><i class="fa fa-plus"></i></button>
+    </div>
+    
+    <div *ngIf="hasChanges" class="row" style="justify-content: center;">
+        <button (click)="cancelChanges()" class="cancel" style="margin-right:10px;">Cancel</button>
+        <button (click)="saveConfiguration()" class="save"><i class="fa fa-save"></i> Save Changes</button>
+    </div>
+</div>

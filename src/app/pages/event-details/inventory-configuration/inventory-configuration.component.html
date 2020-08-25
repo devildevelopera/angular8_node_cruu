@@ -1,0 +1,59 @@
+<ngb-tabset>
+    <ngb-tab *ngFor="let date of dates" title={{date}}>
+        <ng-template ngbTabContent>
+            <div class="row" style="width:100%;background-color:#fff;padding:10px;">
+                <div class="col-md-3">
+                    Name
+                </div>
+                <div class="col-md-2">
+                    Quantity
+                </div>
+                <div class="col-md-2">
+                    Asset Numbers
+                </div>
+                <div class="col-md-2">
+                    Rate
+                </div>
+                <div class="col-2">
+                    Actions
+                </div>
+            </div>
+            <div *ngFor="let inventory of event[date]; let last = last; let even = even;"  style="border-bottom: 1px solid grey;width:100%;padding:10px;" [style.border-bottom]="last ? 'none' : '1px solid grey'" [ngStyle]="even && {'background-color': '#e6e6e6'}">
+                <app-inventory-configuration-row [date]="date" [inventory]="inventory"
+                  [isLast]="last" [isEven]="even"></app-inventory-configuration-row>
+            </div>
+            <div style="margin-left: 10px;margin-top:5px;"*ngIf="event[date].length < 1">
+                No Inventory selected for this date.
+            </div>
+            <div [formGroup]="newInventoryForm" *ngIf="isAdding" class="row" style="padding:10px;border-top: 1px solid grey;width:100%;padding:10px;">
+                <div class="col-md-3">
+                    <select formControlName="selectedInventoryId" (change)="selectInventory()">
+                        <option value="">Select</option>
+                        <option *ngFor="let inventory of inventoryList" [value]="inventory.value">{{inventory.label}}</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <input type="number" formControlName="selectedQuantity" min="1" max="50" (change)="modifyAssetQuantityLimit()" required>
+                </div>
+                <div class="col-md-2">
+                    <ng-multiselect-dropdown
+                        formControlName="selectedAssets"
+                        [data]="inventoryAssetList"
+                        [settings]="dropdownSettings"
+                    >
+                    </ng-multiselect-dropdown>
+                </div>
+                <div class="col-md-2">
+                    <input style="width:100%;" type="text" placeholder="$Rate" formControlName="inventoryRate"/>
+                </div>
+                <div (click)="saveInventoryToDate(date)" class="col-md-2">
+                    <i class="fa fa-save"></i>
+                </div>
+            </div>
+            <div>
+                <button *ngIf="!isAdding" class="add-inventory" (click)="addInventory()"><i class="fa fa-plus"></i></button>
+                <button *ngIf="isAdding" class="close" (click)="close()"><i class="fa fa-close"></i></button>
+            </div>
+        </ng-template>
+    </ngb-tab>
+</ngb-tabset>

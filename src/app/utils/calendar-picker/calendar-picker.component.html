@@ -1,0 +1,10 @@
+<ngb-datepicker #dp ngModel [displayMonths]="2" [navigation]="'arrows'" [startDate]="startDate" [firstDayOfWeek]="7" [dayTemplate]="t" outsideDays="collapsed" style="border:none; border-radius:0">
+</ngb-datepicker>
+
+<ng-template #t let-date="date" let-currentWeek="week" let-focused="focused" let-currentMonth="currentMonth">
+    <span class="custom-day" ngClass="{'calselected': hoveredDate == date}" (click)="pickDate(date)"
+        [class.focused]="focused" [class.range]="isFrom(date) || isTo(date) || isInside(date)"
+        [class.faded]="isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+        {{date.day}}
+    </span>
+</ng-template>

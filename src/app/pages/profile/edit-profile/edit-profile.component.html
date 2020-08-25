@@ -1,0 +1,69 @@
+<div class="row">
+	<div class="col-sm-1"></div>
+	<div class="col-sm-6">
+		<h4 style="margin-left:14px;">Personal</h4>
+		<div class="field-spacing col-sm-6">
+			<label class="input-label" for="eventTitle">First Name:</label>
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" aria-label="time" aria-describedby="basic-addon2" [(ngModel)]="user.firstName" (ngModelChange)="us.update(user)">
+			</div>
+		</div>
+		<div class="field-spacing col-sm-6">
+			<label class="input-label" for="eventTitle">Last Name:</label>
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" aria-label="time" aria-describedby="basic-addon2" [(ngModel)]="user.lastName" (ngModelChange)="us.update(user)">
+			</div>
+		</div>
+		<div class="field-spacing col-sm-6">
+			<label class="input-label" for="eventTitle">Email:</label>
+			<div class="input-group mb-3">{{user.email}}</div>
+		</div>
+
+		
+		<div class="field-spacing col-sm-6">
+			<label class="input-label" for="eventTitle">Address:</label>
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" aria-label="time" aria-describedby="basic-addon2" [(ngModel)]="user.address" (ngModelChange)="us.update(user)">
+			</div>
+		</div>
+		<div class="field-spacing col-sm-6">
+			<label class="input-label" for="eventTitle">Address 2:</label>
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" aria-label="time" aria-describedby="basic-addon2" [(ngModel)]="user.address2" (ngModelChange)="us.update(user)">
+			</div>
+		</div>
+		<div class="field-spacing col-sm-6">
+			<label class="input-label" for="eventTitle">Phone Number:</label>
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" aria-label="time" aria-describedby="basic-addon2" [(ngModel)]="user.phoneNumber" (ngModelChange)="us.update(user)">
+			</div>
+		</div>
+		<div class="field-spacing col-sm-6">
+			<label class="input-label" for="eventTitle">Emergency Contact Name:</label>
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" aria-label="time" aria-describedby="basic-addon2" [(ngModel)]="user.emergencyContactName" (ngModelChange)="us.update(user)">
+			</div>
+		</div>
+		<div class="field-spacing col-sm-6">
+			<label class="input-label" for="eventTitle">Emergency Contact:</label>
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" aria-label="time" aria-describedby="basic-addon2" [(ngModel)]="user.emergencyContact" (ngModelChange)="us.update(user)">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="mt-2">
+	<div *ngFor="let org of user.organizations">
+		<h5 style="margin-left:14px;">Organization {{os._orgs[org._id]?.name}}</h5>
+		<div class="field-spacing col-sm-6" *ngIf="ps._positions[os.org._id]">
+			<ng-multiselect-dropdown [(ngModel)]="org.positions" (ngModelChange)="us.update(user)" [data]="ps._positions[os.org._id]" [settings]="dropdownSettings"></ng-multiselect-dropdown>
+		</div>
+	</div>
+	<h5 style="margin-left:14px;" class="mt-2">Groups:</h5>
+	<label style="margin-left:14px;"  *ngFor="let group of gs.groups" class="waw-checkbox">
+		<span>{{group.name}}</span>
+		<input type="checkbox" name="check" [(ngModel)]="group._users[user._id]" (ngModelChange)="update_group(group)">
+		<span class="checkmark"></span>
+	</label>
+</div>

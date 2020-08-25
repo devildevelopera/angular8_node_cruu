@@ -1,0 +1,25 @@
+.column {
+    width:200px;
+}
+.column-date {
+    text-align: center;
+    width:100px;
+}
+.column-phone {
+    text-align: center;
+    width: 150px;
+}
+.header {
+    border-bottom:1px solid black;
+}
+
+.padding {
+    padding: 5px;
+}
+
+.crew-row {
+    padding:5px;
+    border-bottom: 1px solid darkgrey;
+}
+
+@media print{@page {size: landscape}}

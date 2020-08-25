@@ -1,0 +1,87 @@
+ <form class="p20" (ngSubmit)="submit()">
+	<button type="button" class="close outline-mutted" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<div class="d-flex flex-column job-block">
+		<div class="field-box">
+			<div class="grid-row-1">
+				<div class="grid-row-2">
+					<span class="jobv-table__text">Position:</span>
+					{{job.position}}
+				</div>
+				<div class="grid-row-2">
+					<span class="jobv-table__text">Time:</span>
+					{{job.times.from?.time}} - {{job.times.to?.time}}
+				</div>
+			</div>
+			<div class="grid-row-1" *ngIf="us.user.isAdmin">
+				<div class="grid-row-2">
+					<span class="jobv-table__text">Rate:</span>
+					{{job.rate}}
+				</div>
+				<div class="grid-row-2">
+					<span class="jobv-table__text">Fixed:</span>
+					{{job.fixed}}
+				</div>
+				<div class="grid-row-2">
+					<span class="jobv-table__text">Extra:</span>
+					{{job.extra}}
+				</div>
+			</div>
+			<div class="grid-row-1" *ngIf="us.user.isAdmin">
+				<div class="grid-row-2" *ngIf="job.assigned">
+					<span class="jobv-table__text">Assigned Member:</span>
+					<span>{{us._users[job.assigned]?.firstName}} {{us._users[job.assigned]?.lastName}}</span>
+				</div>
+				<div class="grid-row-2" *ngIf="job.assigned">
+					<span class="jobv-table__text">Status:</span>
+					<span *ngIf="!job.accepted && !job.declined && !job.assigned">Unassigned</span>
+					<span *ngIf="!job.accepted && !job.declined && job.assigned">Requested</span>
+					<span *ngIf="job.accepted">Accepted</span>
+					<span *ngIf="job.declined">Denied</span>
+				</div>
+			</div>
+			<div class="grid-row-1" *ngIf="job.assigned && us.user.isAdmin">
+				<div class="grid-row-2">
+					<span class="jobv-table__text">
+						<span>Career Rating:</span>
+					</span>
+					<span>{{(rs.rated[job.event+job.assigned+job.day]&&rs.rated[job.event+job.assigned+job.day].toFixed(1)||'N/A')}}</span>
+				</div>
+				<div class="grid-row-2 align-items-center">
+					<span class="jobv-table__text">Event Rating:</span>
+					<span class="row pl15">
+						<div class="star-ratings">
+							<div class="fill-ratings" [ngStyle]="color(job)">
+								<span><a (click)="rate(1, job);">★</a><a (click)="rate(2, job);">★</a><a (click)="rate(3, job);">★</a><a (click)="rate(4, job);">★</a><a (click)="rate(5, job);">★</a></span>
+							</div>
+							<div class="empty-ratings">
+								<span><a (click)="rate(1, job);">★</a><a (click)="rate(2, job);">★</a><a (click)="rate(3, job);">★</a><a (click)="rate(4, job);">★</a><a (click)="rate(5, job);">★</a></span>
+							</div>
+						</div>
+					</span>
+				</div>
+			</div>
+			
+			<div class="grid-row-1">
+				<div class="grid-row-2">
+					<span class="jobv-table__text">Note:</span>
+					{{job.comment}}
+				</div>
+				<ng-container *ngIf="us.user.isAdmin && (job.comments|each).length">
+					<div class="grid-row-2" *ngFor="let userId of job.comments|each">
+						<span class="jobv-table__text">
+							<!-- <span>{{us._users[userId]?.firstName}} {{us._users[userId]?.lastName}}:</span> -->
+							<span>Crew Comment:</span>
+						</span>
+						<span>{{job.comments[userId]}}</span>
+					</div>
+				</ng-container>
+			</div>
+		</div>
+		<!-- <div class="job-btn d-flex justify-content-between mt10">
+			<button class="btn btn-success" type="submit"
+			[disabled]="!hasDate()||(!job.fixed&&!job.rate)">{{job._id&&'Save'||'Create'}}</button>
+		</div> -->
+	</div>
+</form>

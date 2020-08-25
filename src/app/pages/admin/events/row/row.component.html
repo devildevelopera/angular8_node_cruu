@@ -1,0 +1,5 @@
+<div routerLink="/event-details" [queryParams]="{eventId: event._id}" *ngFor="let event of events" style="width:300px;background-color:blueviolet;border-radius:5px 5px;padding:5px;margin-top:5px;height:100%;line-height:40px;">
+    <h5 style="display:inline-block;">{{event.title}}</h5><h5 style="float:right;margin-top:5px;">{{event.userCallTime ? event.userCallTime : event.time}}</h5>
+    <div>{{event.address}}, {{event.city}}</div> 
+    <div>{{event.state}} {{event.zipCode}}</div>
+</div>

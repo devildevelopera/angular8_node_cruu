@@ -1,0 +1,92 @@
+.row {
+  margin: 0 !important;
+}
+
+.hasError {
+  border: '2px solid #cc0000';
+  background-color: '#d16b6b';
+}
+
+.isEven {
+  background-color: '#e6e6e6';
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
+.mb5 {
+  margin-bottom: 5px;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+
+.col-rate {
+  flex: 0 0 105px;
+  max-width: 105px;
+  padding-right: 15px;
+  padding-left: 15px;
+
+  @media screen and (max-width: 758px) {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+.w100 {
+  width: 100%;
+}
+
+.time-block {
+  display: flex;
+  margin-bottom: 5px;
+
+  @media screen and (max-width: 758px) {
+    margin-top: 10px;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.crew-actionBtn {
+  .fa-plus {
+    color: white;
+  }
+
+  @media screen and (max-width: 1100px) {
+    .btnAdd {
+      white-space: nowrap;
+    }
+  }
+
+  @media screen and (max-width: 1100px) {
+    margin-top: 10px;
+  }
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.td {
+  padding: .75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+
+
+
+  min-width: 200px;
+
+  line-height: 36px;
+}
+
+
+#crew-btns {
+    @media screen and (max-width: 578px) {
+        flex-direction: column;
+    }
+}

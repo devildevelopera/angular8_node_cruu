@@ -1,0 +1,13 @@
+<form class="email" (ngSubmit)="submit()">
+	<div class="d-flex justify-content-between align-items-center mb20">
+		<div class="email-title font-weight-bold">Send Email</div>
+		<button type="button" class="email-close close outline-mutted"  (click)="modal.close()">
+			<span>&times;</span>
+		</button>
+	</div>
+	<div class="email-msg">
+		<input class="email-msg__input form-control" type="text" [(ngModel)]="email.subject" placeholder="Subject" name="Subject">
+		<textarea class="email-msg__textarea form-control" [(ngModel)]="email.message" placeholder="Message" name="Message"></textarea>
+	</div>
+	<button class="email-btn btn btn-success" type="submit" [disabled]="!email.subject||!email.message">Send</button>
+</form>

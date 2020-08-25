@@ -1,0 +1,79 @@
+.modal-overlay {
+    background-color: rgba(104,104,104, .5);
+    content: '';
+    position: absolute;
+    top: 69px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    z-index:2;
+    overflow-y: hidden;
+}
+
+.modal-dialog {
+    margin: 0 auto;
+    text-align: center;
+    background-color: grey;
+    height: 600px;
+    width:100%;
+    border-radius: 10px 10px;
+    padding: 15px;
+    max-width: 800px !important;
+    z-index:3;
+    margin-top:20px;
+}
+
+.close-icon {
+    color: #f8f8ff;
+    font-size: 25px;
+    margin-left: auto;
+    float: right;
+    margin-right: 5px;
+    margin-top: 5px;
+    z-index:3;
+    position: relative;
+}
+
+.btn-primary {
+    background-color: #ee352a;
+    border-color: #ee352a;
+    width: 120px;
+    border-radius: 5px 5px;
+    float:right;
+    margin-right:15px;
+    margin-top: 15px;
+    padding:3px;
+}
+
+.btn-primary:disabled {
+    background-color: grey;
+    border-color: grey;
+    z-index:3;
+    position:relative;
+}
+
+.btn-secondary {
+    background: none;
+    border: none;
+    color: black;
+    width:100px;
+    border-radius: 5px 5px;
+    margin-right:15px;
+    margin-top:15px;
+    padding:3px;
+    position:relative;
+    z-index:3;
+}
+
+.btn-add {
+    background-color: green;
+    border-color: greenyellow;
+    width: 100px;
+    border-radius: 5px 5px;
+    float:right;
+    margin-right:15px;
+    margin-top: 15px;
+    padding:3px;
+    float:left;
+    color:white;
+}

@@ -1,0 +1,48 @@
+<div *ngIf="isShown" class="modal-overlay">
+    <div class="modal-dialog">
+        <div>
+            <i (click)="toggleShow()" class="fa fa-close close-icon"></i>
+        </div>
+        <h3 (click)="toggleShow()" style="padding-top:20px;">Add Crew for {{subTitle}}</h3>
+        <div class="row" style="text-align:left;width:100%;background-color:#fff;padding:10px;margin:0 auto;background-color:black;color:white;">
+            <div class="col-md-3">
+                Name
+            </div>
+            <div class="col-md-3">
+                Position
+            </div>
+            <div class="col-md-3">
+                Phone Number
+            </div>
+        </div>
+        <div class="row" *ngFor="let inventoryItem of inventory; let last = last; let even = even;" style="text-align:left;border-bottom: 1px solid grey;width:100%;padding:10px;margin:0 auto;background-color:white;"
+            [style.border-bottom]="last ? 'none' : '1px solid grey'" [ngStyle]="even && {'background-color': '#e6e6e6'}">
+            <div class="col-md-3">
+                {{inventoryItem.name}}
+            </div>
+            <div class="col-md-3">
+                <select style="width:100%;" value="inventoryItem.position">
+                    <option *ngFor="let positon of positionList">{{position}}</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                {{inventoryItem.quantity}}
+            </div>
+            <div (click)="deleteUser(inventoryItem, date)" class="col-md-2">
+                <i class="fa fa-trash"></i>
+            </div>
+        </div>
+        <div class="row" style="text-align:left;width:100%;padding:10px;margin:0 auto;"
+            [style.border-bottom]="last ? 'none' : '1px solid grey'" [ngStyle]="even && {'background-color': '#e6e6e6'}">
+            <div (click)="deleteUser(inventoryItem, date)" class="col-md-3">
+                <button class="btn-add"><i class="fa fa-plus"></i> Add Inventory</button>
+            </div>
+        </div>
+        <div class="row" style="justify-content: center;">
+            <div style="justify-content: center;">
+                <button class="btn-secondary">Cancel</button>
+                <button class="btn-primary"> Add Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
